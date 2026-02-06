@@ -6,6 +6,7 @@ require (
 	github.com/invopop/gobl v0.307.0
 	github.com/joho/godotenv v1.5.1
 	github.com/magefile/mage v1.15.0
+	github.com/nbio/xml v0.0.0-20260120185757-5486e0eaec83
 	github.com/spf13/cobra v1.9.1
 	gitlab.com/flimzy/testy v0.14.0
 )
@@ -28,7 +29,7 @@ require (
 )
 
 require (
-	cloud.google.com/go v0.116.0 // indirect
+	cloud.google.com/go v0.116.0
 	github.com/Masterminds/semver/v3 v3.3.1 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
 	github.com/google/uuid v1.6.0 // indirect

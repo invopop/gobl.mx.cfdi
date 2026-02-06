@@ -1,0 +1,133 @@
+{
+	"$schema": "https://gobl.org/draft-0/envelope",
+	"head": {
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"dig": {
+			"alg": "sha256",
+			"val": "7c34a08186e77fbfc229d1c30c1f139d1752876fdbc18c30b5f7be407b420536"
+		}
+	},
+	"doc": {
+		"$schema": "https://gobl.org/draft-0/bill/invoice",
+		"$regime": "MX",
+		"$addons": [
+			"mx-cfdi-v4"
+		],
+		"$tags": [
+			"bypass"
+		],
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"type": "standard",
+		"series": "XAMA620210DQ5",
+		"code": "000037",
+		"issue_date": "2025-10-24",
+		"issue_time": "11:38:18",
+		"currency": "MXN",
+		"tax": {
+			"ext": {
+				"mx-cfdi-doc-type": "I",
+				"mx-cfdi-issue-place": "01219",
+				"mx-cfdi-payment-method": "PUE"
+			}
+		},
+		"supplier": {
+			"name": "ALBA XKARAJAM MENDEZ",
+			"tax_id": {
+				"country": "MX",
+				"code": "XAMA620210DQ5"
+			},
+			"ext": {
+				"mx-cfdi-fiscal-regime": "612"
+			}
+		},
+		"lines": [
+			{
+				"i": 1,
+				"quantity": "1",
+				"item": {
+					"name": "Item with discount #1",
+					"price": "3482.7586",
+					"ext": {
+						"mx-cfdi-prod-serv": "84141602"
+					}
+				},
+				"sum": "3482.7586",
+				"discounts": [
+					{
+						"amount": "348.2760"
+					}
+				],
+				"taxes": [
+					{
+						"cat": "VAT",
+						"percent": "16.0%"
+					}
+				],
+				"total": "3134.4826"
+			},
+			{
+				"i": 2,
+				"quantity": "1",
+				"item": {
+					"name": "Item with discount #2",
+					"price": "870.6897",
+					"ext": {
+						"mx-cfdi-prod-serv": "84141602"
+					}
+				},
+				"sum": "870.6897",
+				"discounts": [
+					{
+						"amount": "87.0690"
+					}
+				],
+				"taxes": [
+					{
+						"cat": "VAT",
+						"percent": "16.0%"
+					}
+				],
+				"total": "783.6207"
+			}
+		],
+		"payment": {
+			"advances": [
+				{
+					"description": "Pago en una sola exhibición",
+					"percent": "100%",
+					"amount": "4545.00",
+					"ext": {
+						"mx-cfdi-payment-means": "01"
+					}
+				}
+			]
+		},
+		"totals": {
+			"sum": "3918.10",
+			"total": "3918.10",
+			"taxes": {
+				"categories": [
+					{
+						"code": "VAT",
+						"rates": [
+							{
+								"base": "3918.10",
+								"percent": "16.0%",
+								"amount": "626.90"
+							}
+						],
+						"amount": "626.90"
+					}
+				],
+				"sum": "626.90"
+			},
+			"tax": "626.90",
+			"total_with_tax": "4545.00",
+			"payable": "4545.00",
+			"due": "0.00"
+		}
+	},
+	"sigs": [
+		""
+	]
+}

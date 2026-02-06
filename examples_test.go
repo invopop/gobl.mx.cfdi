@@ -12,6 +12,9 @@ import (
 	"github.com/invopop/gobl"
 	cfdi "github.com/invopop/gobl.cfdi"
 	"github.com/invopop/gobl.cfdi/test"
+	"github.com/invopop/gobl/bill"
+	"github.com/invopop/gobl/dsig"
+	"github.com/invopop/gobl/uuid"
 	"github.com/lestrrat-go/libxml2"
 	"github.com/lestrrat-go/libxml2/xsd"
 	"github.com/stretchr/testify/assert"
@@ -20,11 +23,16 @@ import (
 
 const (
 	pathConvert = "convert"
+	pathParse   = "parse"
 	pathIn      = "in"
 	pathOut     = "out"
 )
 
-var updateOut = flag.Bool("update", false, "Update the JSON and XML files in test/data/convert and test/data/parse")
+var (
+	updateOut = flag.Bool("update", false, "Update the JSON and XML files in test/data/convert and test/data/parse")
+
+	staticUUID uuid.UUID = "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2"
+)
 
 func TestConvertExamples(t *testing.T) {
 	schema, err := loadSchema()
@@ -37,7 +45,7 @@ func TestConvertExamples(t *testing.T) {
 
 		t.Run(inName, func(t *testing.T) {
 			env := loadEnvelope(t, inputFilepath(pathConvert, inName))
-			doc, err := cfdi.NewDocument(env)
+			doc, err := cfdi.Convert(env)
 			require.NoError(t, err)
 
 			data, err := doc.Bytes()
@@ -60,6 +68,46 @@ func TestConvertExamples(t *testing.T) {
 
 			output := loadOutputFile(t, pathConvert, outName)
 			assert.Equal(t, strings.TrimSpace(string(output)), strings.TrimSpace(string(data)), "Output should match the expected XML. Update with --update flag.")
+		})
+	}
+}
+
+func TestParseExamples(t *testing.T) {
+	examples := findSourceFiles(t, pathParse, "*.xml")
+	for _, example := range examples {
+		inName := filepath.Base(example)
+		outName := strings.Replace(inName, ".xml", ".json", 1)
+
+		t.Run(inName, func(t *testing.T) {
+			xmlData, err := os.ReadFile(example)
+			require.NoError(t, err)
+
+			env, err := cfdi.Parse(xmlData)
+			require.NoError(t, err)
+
+			// Set the static UUID to avoid different UUIDs between executions.
+			env.Head.UUID = staticUUID
+			if inv, ok := env.Extract().(*bill.Invoice); ok {
+				inv.UUID = staticUUID
+			}
+			require.NoError(t, env.Calculate())
+
+			// Add a mock signature to make the envelope with the stamps valid
+			env.Signatures = []*dsig.Signature{new(dsig.Signature)}
+
+			writeEnvelope(t, dataPath(pathParse, pathOut, outName), env)
+
+			data, err := json.MarshalIndent(env, "", "\t")
+			require.NoError(t, err)
+
+			output := loadOutputFile(t, pathParse, outName)
+			var expectedEnv gobl.Envelope
+			require.NoError(t, json.Unmarshal(output, &expectedEnv))
+
+			expectedData, err := json.MarshalIndent(expectedEnv, "", "\t")
+			require.NoError(t, err)
+
+			assert.JSONEq(t, string(expectedData), string(data), "Invoice should match the expected JSON. Update with --update flag.")
 		})
 	}
 }

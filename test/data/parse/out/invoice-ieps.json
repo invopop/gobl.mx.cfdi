@@ -1,0 +1,157 @@
+{
+	"$schema": "https://gobl.org/draft-0/envelope",
+	"head": {
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"dig": {
+			"alg": "sha256",
+			"val": "4952ecd033b842d73bbe21cba5abd722954ff669a465a4bb57c1250fbfb3cff5"
+		}
+	},
+	"doc": {
+		"$schema": "https://gobl.org/draft-0/bill/invoice",
+		"$regime": "MX",
+		"$addons": [
+			"mx-cfdi-v4"
+		],
+		"$tags": [
+			"bypass"
+		],
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"type": "standard",
+		"series": "TEST",
+		"code": "00001",
+		"issue_date": "2023-07-10",
+		"issue_time": "12:00:00",
+		"currency": "MXN",
+		"tax": {
+			"ext": {
+				"mx-cfdi-doc-type": "I",
+				"mx-cfdi-issue-place": "26015",
+				"mx-cfdi-payment-method": "PPD"
+			}
+		},
+		"supplier": {
+			"name": "ESCUELA KEMPER URGATE",
+			"tax_id": {
+				"country": "MX",
+				"code": "EKU9003173C9"
+			},
+			"ext": {
+				"mx-cfdi-fiscal-regime": "601"
+			}
+		},
+		"customer": {
+			"name": "UNIVERSIDAD ROBOTICA ESPAÑOLA",
+			"tax_id": {
+				"country": "MX",
+				"code": "URE180429TM6"
+			},
+			"addresses": [
+				{
+					"code": "86991"
+				}
+			],
+			"ext": {
+				"mx-cfdi-fiscal-regime": "601",
+				"mx-cfdi-use": "G01"
+			}
+		},
+		"lines": [
+			{
+				"i": 1,
+				"quantity": "1",
+				"item": {
+					"name": "Redbull with lots of sugar",
+					"price": "30.00",
+					"ext": {
+						"mx-cfdi-prod-serv": "90101500"
+					}
+				},
+				"sum": "30.00",
+				"charges": [
+					{
+						"code": "IEPS",
+						"percent": "25.0%",
+						"amount": "7.50"
+					},
+					{
+						"code": "IEPS",
+						"quantity": "0.400",
+						"rate": "1.000000",
+						"amount": "0.40"
+					}
+				],
+				"taxes": [
+					{
+						"cat": "VAT",
+						"percent": "16.0%"
+					}
+				],
+				"total": "30.00"
+			},
+			{
+				"i": 2,
+				"quantity": "1",
+				"item": {
+					"name": "Redbull boost with lots more sugar",
+					"price": "34.00",
+					"ext": {
+						"mx-cfdi-prod-serv": "90101500"
+					}
+				},
+				"sum": "34.00",
+				"charges": [
+					{
+						"code": "IEPS",
+						"percent": "25.0%",
+						"amount": "8.50"
+					},
+					{
+						"code": "IEPS",
+						"quantity": "0.500",
+						"rate": "1.000000",
+						"amount": "0.50"
+					}
+				],
+				"taxes": [
+					{
+						"cat": "VAT",
+						"percent": "16.0%"
+					}
+				],
+				"total": "34.00"
+			}
+		],
+		"payment": {
+			"terms": {
+				"notes": "Condiciones de pago"
+			}
+		},
+		"totals": {
+			"sum": "80.90",
+			"total": "80.90",
+			"taxes": {
+				"categories": [
+					{
+						"code": "VAT",
+						"rates": [
+							{
+								"base": "80.90",
+								"percent": "16.0%",
+								"amount": "12.94"
+							}
+						],
+						"amount": "12.94"
+					}
+				],
+				"sum": "12.94"
+			},
+			"tax": "12.94",
+			"total_with_tax": "93.84",
+			"payable": "93.84"
+		}
+	},
+	"sigs": [
+		""
+	]
+}

@@ -13,7 +13,6 @@ import (
 	addon "github.com/invopop/gobl/addons/mx/cfdi"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cal"
-	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/currency"
 	"github.com/invopop/gobl/num"
 	"github.com/invopop/gobl/pay"
@@ -64,6 +63,9 @@ var ErrNotSupported = errors.New("not supported")
 // regime global
 var regime = tax.RegimeDefFor("MX")
 
+// zero global
+var zero = regime.Currency.Def().Zero()
+
 // Document is a pseudo-model for containing the XML document being created
 type Document struct {
 	XMLName        xml.Name `xml:"cfdi:Comprobante"`
@@ -85,7 +87,7 @@ type Document struct {
 	Moneda            string      `xml:",attr"`
 	TipoCambio        *num.Amount `xml:",attr,omitempty"`
 	Exportacion       string      `xml:",attr"`
-	MetodoPago        cbc.Code    `xml:",attr,omitempty"`
+	MetodoPago        string      `xml:",attr,omitempty"`
 	FormaPago         string      `xml:",attr,omitempty"`
 	CondicionesDePago string      `xml:",attr,omitempty"`
 	Sello             string      `xml:",attr"`
@@ -99,8 +101,13 @@ type Document struct {
 	Conceptos        *Conceptos         `xml:"cfdi:Conceptos"` //nolint:misspell
 	Impuestos        *Impuestos         `xml:"cfdi:Impuestos,omitempty"`
 
-	Complemento *internal.Nodes `xml:"cfdi:Complemento,omitempty"`
-	Addenda     *internal.Nodes `xml:"cfdi:Addenda,omitempty"`
+	// Supported complements
+	ComplementoValesDeDespensa         *ValesDeDespensa           `xml:"cfdi:Complemento>valesdedespensa:ValesDeDespensa,omitempty"`
+	ComplementoEstadoCuentaCombustible *EstadoDeCuentaCombustible `xml:"cfdi:Complemento>ecc12:EstadoDeCuentaCombustible,omitempty"`
+	ComplementoTimbreFiscalDigital     *TimbreFiscalDigital       `xml:"cfdi:Complemento>tfd:TimbreFiscalDigital,omitempty"`
+
+	// Supported addendas
+	AddendaMabe *addendas.MabeFactura `xml:"cfdi:Addenda>mabe:Factura,omitempty"`
 }
 
 // GlobalInformation is used for invoices that contain a summary of B2C documents.
@@ -110,8 +117,8 @@ type GlobalInformation struct {
 	Year   string `xml:"Año,attr"`
 }
 
-// NewDocument converts a GOBL envelope into a CFDI document
-func NewDocument(env *gobl.Envelope) (*Document, error) {
+// Convert converts a GOBL envelope into a CFDI document
+func Convert(env *gobl.Envelope) (*Document, error) {
 	inv, ok := env.Extract().(*bill.Invoice)
 	if !ok {
 		return nil, fmt.Errorf("invalid type %T", env.Document)
@@ -253,26 +260,6 @@ func (d *Document) Bytes() ([]byte, error) {
 	return append([]byte(xml.Header), bytes...), nil
 }
 
-// AppendComplemento appends a complement to the document
-func (d *Document) AppendComplemento(c interface{}) {
-	// We keep it nil unless an element is added so that no empty node is marshalled to XML
-	if d.Complemento == nil {
-		d.Complemento = &internal.Nodes{}
-	}
-
-	d.Complemento.Nodes = append(d.Complemento.Nodes, c)
-}
-
-// AppendAddenda appends an addenda to the document
-func (d *Document) AppendAddenda(c interface{}) {
-	// We keep it nil unless an element is added so that no empty node is marshalled to XML
-	if d.Addenda == nil {
-		d.Addenda = &internal.Nodes{}
-	}
-
-	d.Addenda.Nodes = append(d.Addenda.Nodes, c)
-}
-
 func addComplementos(doc *Document, complements []*schema.Object) error {
 	for _, c := range complements {
 		switch o := c.Instance().(type) {
@@ -295,8 +282,14 @@ func addAddendas(doc *Document, inv *bill.Invoice) error {
 	}
 
 	for _, ad := range ads {
-		doc.AppendAddenda(ad)
+		switch ad := ad.(type) {
+		case *addendas.MabeFactura:
+			doc.AddendaMabe = ad
+		default:
+			return fmt.Errorf("unsupported addenda %T", ad)
+		}
 	}
+
 	return nil
 }
 
@@ -325,15 +318,15 @@ func tipoCambio(inv *bill.Invoice) *num.Amount {
 	return &a
 }
 
-func metodoPago(inv *bill.Invoice) cbc.Code {
+func metodoPago(inv *bill.Invoice) string {
 	if inv.Tax != nil && inv.Tax.Ext.Has(addon.ExtKeyPaymentMethod) {
-		return inv.Tax.Ext[addon.ExtKeyPaymentMethod]
+		return inv.Tax.Ext[addon.ExtKeyPaymentMethod].String()
 	}
 	// Fallback to the payment method based on the detected payment advances
 	if isPrepaid(inv) {
-		return addon.ExtCodePaymentMethodPUE
+		return addon.ExtCodePaymentMethodPUE.String()
 	}
-	return addon.ExtCodePaymentMethodPPD
+	return addon.ExtCodePaymentMethodPPD.String()
 }
 
 func formaPago(inv *bill.Invoice) string {
