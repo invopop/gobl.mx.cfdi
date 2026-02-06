@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/invopop/gobl"
-	"github.com/invopop/gobl/addons/mx/cfdi"
+	addon "github.com/invopop/gobl/addons/mx/cfdi"
 	"github.com/invopop/gobl/head"
 	"github.com/invopop/gobl/regimes/mx"
 	"github.com/invopop/validation"
@@ -56,11 +56,11 @@ func Stamp(env *gobl.Envelope, sd *StampData, doc *Document) error {
 		Value:    sd.UUID,
 	})
 	env.Head.AddStamp(&head.Stamp{
-		Provider: cfdi.StampSignature,
+		Provider: addon.StampSignature,
 		Value:    sd.CFDI.Value,
 	})
 	env.Head.AddStamp(&head.Stamp{
-		Provider: cfdi.StampSerial,
+		Provider: addon.StampSerial,
 		Value:    sd.CFDI.Serial,
 	})
 	env.Head.AddStamp(&head.Stamp{

@@ -10,7 +10,7 @@ import (
 	"github.com/invopop/gobl.cfdi/addendas"
 	"github.com/invopop/gobl.cfdi/internal"
 	"github.com/invopop/gobl.cfdi/internal/format"
-	"github.com/invopop/gobl/addons/mx/cfdi"
+	addon "github.com/invopop/gobl/addons/mx/cfdi"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cal"
 	"github.com/invopop/gobl/cbc"
@@ -203,13 +203,13 @@ func NewDocument(env *gobl.Envelope) (*Document, error) {
 }
 
 func newGlobalInformation(inv *bill.Invoice) *GlobalInformation {
-	if inv.Tax == nil || !inv.Tax.Ext.Has(cfdi.ExtKeyGlobalPeriod) {
+	if inv.Tax == nil || !inv.Tax.Ext.Has(addon.ExtKeyGlobalPeriod) {
 		return nil
 	}
 	return &GlobalInformation{
-		Period: inv.Tax.Ext[cfdi.ExtKeyGlobalPeriod].String(),
-		Month:  inv.Tax.Ext[cfdi.ExtKeyGlobalMonth].String(),
-		Year:   inv.Tax.Ext[cfdi.ExtKeyGlobalYear].String(),
+		Period: inv.Tax.Ext[addon.ExtKeyGlobalPeriod].String(),
+		Month:  inv.Tax.Ext[addon.ExtKeyGlobalMonth].String(),
+		Year:   inv.Tax.Ext[addon.ExtKeyGlobalYear].String(),
 	}
 }
 
@@ -236,11 +236,11 @@ func validateSupport(inv *bill.Invoice) error {
 }
 
 func issuePlace(inv *bill.Invoice) string {
-	if inv.Tax != nil && inv.Tax.Ext.Has(cfdi.ExtKeyIssuePlace) {
-		return inv.Tax.Ext[cfdi.ExtKeyIssuePlace].String()
+	if inv.Tax != nil && inv.Tax.Ext.Has(addon.ExtKeyIssuePlace) {
+		return inv.Tax.Ext[addon.ExtKeyIssuePlace].String()
 	}
 	// Fallback
-	return inv.Supplier.Ext[cfdi.ExtKeyIssuePlace].String()
+	return inv.Supplier.Ext[addon.ExtKeyIssuePlace].String()
 }
 
 // Bytes returns the XML representation of the document in bytes
@@ -276,9 +276,9 @@ func (d *Document) AppendAddenda(c interface{}) {
 func addComplementos(doc *Document, complements []*schema.Object) error {
 	for _, c := range complements {
 		switch o := c.Instance().(type) {
-		case *cfdi.FuelAccountBalance:
+		case *addon.FuelAccountBalance:
 			addEstadoCuentaCombustible(doc, o)
-		case *cfdi.FoodVouchers:
+		case *addon.FoodVouchers:
 			addValesDeDespensa(doc, o)
 		default:
 			return fmt.Errorf("unsupported complement %T", o)
@@ -313,7 +313,7 @@ func lookupTipoDeComprobante(inv *bill.Invoice) string {
 		return ""
 	}
 
-	return inv.Tax.Ext[cfdi.ExtKeyDocType].String()
+	return inv.Tax.Ext[addon.ExtKeyDocType].String()
 }
 
 func tipoCambio(inv *bill.Invoice) *num.Amount {
@@ -326,14 +326,14 @@ func tipoCambio(inv *bill.Invoice) *num.Amount {
 }
 
 func metodoPago(inv *bill.Invoice) cbc.Code {
-	if inv.Tax != nil && inv.Tax.Ext.Has(cfdi.ExtKeyPaymentMethod) {
-		return inv.Tax.Ext[cfdi.ExtKeyPaymentMethod]
+	if inv.Tax != nil && inv.Tax.Ext.Has(addon.ExtKeyPaymentMethod) {
+		return inv.Tax.Ext[addon.ExtKeyPaymentMethod]
 	}
 	// Fallback to the payment method based on the detected payment advances
 	if isPrepaid(inv) {
-		return cfdi.ExtCodePaymentMethodPUE
+		return addon.ExtCodePaymentMethodPUE
 	}
-	return cfdi.ExtCodePaymentMethodPPD
+	return addon.ExtCodePaymentMethodPPD
 }
 
 func formaPago(inv *bill.Invoice) string {
@@ -341,7 +341,7 @@ func formaPago(inv *bill.Invoice) string {
 	if !isPrepaid(inv) || adv == nil {
 		return FormaPagoPorDefinir
 	}
-	return adv.Ext[cfdi.ExtKeyPaymentMeans].String()
+	return adv.Ext[addon.ExtKeyPaymentMeans].String()
 }
 
 func isPrepaid(inv *bill.Invoice) bool {

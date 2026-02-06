@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"github.com/invopop/gobl/addons/mx/cfdi"
+	addon "github.com/invopop/gobl/addons/mx/cfdi"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cbc"
 )
@@ -26,7 +26,7 @@ func ClaveProdServ(line *bill.Line) cbc.Code {
 	if line.Item == nil {
 		return ""
 	}
-	val := line.Item.Ext.Get(cfdi.ExtKeyProdServ)
+	val := line.Item.Ext.Get(addon.ExtKeyProdServ)
 	if val == "" {
 		val = DefaultClaveProdServ
 	}

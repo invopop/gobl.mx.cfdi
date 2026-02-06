@@ -5,7 +5,7 @@ import (
 
 	cfdi "github.com/invopop/gobl.cfdi"
 	"github.com/invopop/gobl.cfdi/test"
-	gcfdi "github.com/invopop/gobl/addons/mx/cfdi"
+	addon "github.com/invopop/gobl/addons/mx/cfdi"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/regimes/mx"
 	"github.com/stretchr/testify/assert"
@@ -74,12 +74,12 @@ func TestStamp(t *testing.T) {
 		},
 		{
 			name:  "CFDI Serial",
-			stamp: gcfdi.StampSerial,
+			stamp: addon.StampSerial,
 			value: sd.CFDI.Serial,
 		},
 		{
 			name:  "CFDI Signature",
-			stamp: gcfdi.StampSignature,
+			stamp: addon.StampSignature,
 			value: sd.CFDI.Value,
 		},
 		{

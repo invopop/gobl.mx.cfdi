@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/invopop/gobl.cfdi/test"
-	gcfdi "github.com/invopop/gobl/addons/mx/cfdi"
+	addon "github.com/invopop/gobl/addons/mx/cfdi"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/num"
 	"github.com/invopop/gobl/pay"
@@ -62,7 +62,7 @@ func TestComprobanteIngreso(t *testing.T) {
 		inv.Payment.Advances = append(inv.Payment.Advances, &pay.Advance{
 			Percent:     num.NewPercentage(60, 2),
 			Description: "Second partial settlement",
-			Key:         pay.MeansKeyOnline.With(gcfdi.MeansKeyWallet),
+			Key:         pay.MeansKeyOnline.With(addon.MeansKeyWallet),
 		})
 		doc, _ = test.GenerateCFDIFrom(inv)
 		assert.Equal(t, "PUE", doc.MetodoPago.String())
