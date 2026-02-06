@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd" Version="4.0" TipoDeComprobante="I" Serie="LMC" Folio="0010" Fecha="2023-05-29T12:00:00" LugarExpedicion="26015" SubTotal="200.00" Descuento="20.00" Total="171.60" Moneda="MXN" Exportacion="01" MetodoPago="PPD" FormaPago="99" Sello="" NoCertificado="00000000000000000000" Certificado="">
+  <cfdi:Emisor Rfc="EKU9003173C9" Nombre="ESCUELA KEMPER URGATE" RegimenFiscal="601"></cfdi:Emisor>
+  <cfdi:Receptor Rfc="URE180429TM6" Nombre="UNIVERSIDAD ROBOTICA ESPAÑOLA" DomicilioFiscalReceptor="65000" RegimenFiscalReceptor="601" UsoCFDI="G01"></cfdi:Receptor>
+  <cfdi:Conceptos>
+    <cfdi:Concepto ClaveProdServ="50211502" Cantidad="2" ClaveUnidad="ZZ" Descripcion="Cigarros" ValorUnitario="100.00" Importe="200.00" Descuento="20.00" ObjetoImp="02">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="180.0000" Importe="28.8000" Impuesto="002" TasaOCuota="0.160000" TipoFactor="Tasa"></cfdi:Traslado>
+        </cfdi:Traslados>
+        <cfdi:Retenciones>
+          <cfdi:Retencion Base="180.0000" Importe="19.2001" Impuesto="002" TasaOCuota="0.106667" TipoFactor="Tasa"></cfdi:Retencion>
+          <cfdi:Retencion Base="180.0000" Importe="18.0000" Impuesto="001" TasaOCuota="0.100000" TipoFactor="Tasa"></cfdi:Retencion>
+        </cfdi:Retenciones>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+  </cfdi:Conceptos>
+  <cfdi:Impuestos TotalImpuestosTrasladados="28.80" TotalImpuestosRetenidos="37.20">
+    <cfdi:Retenciones>
+      <cfdi:Retencion Importe="19.20" Impuesto="002"></cfdi:Retencion>
+      <cfdi:Retencion Importe="18.00" Impuesto="001"></cfdi:Retencion>
+    </cfdi:Retenciones>
+    <cfdi:Traslados>
+      <cfdi:Traslado Base="180.00" Importe="28.80" Impuesto="002" TasaOCuota="0.160000" TipoFactor="Tasa"></cfdi:Traslado>
+    </cfdi:Traslados>
+  </cfdi:Impuestos>
+  <cfdi:Addenda>
+    <mabe:Factura xmlns:mabe="https://recepcionfe.mabempresa.com/cfd/addenda/v1" xsi:schemaLocation="https://recepcionfe.mabempresa.com/cfd/addenda/v1 https://recepcionfe.mabempresa.com/cfd/addenda/v1/mabev1.xsd" version="1.0" tipoDocumento="FACTURA" folio="LMC0010" fecha="2023-05-29" ordenCompra="9100000000" referencia1="123456" referencia2="654321">
+      <mabe:Moneda tipoMoneda="MXN"></mabe:Moneda>
+      <mabe:Proveedor codigo="123456"></mabe:Proveedor>
+      <mabe:Entrega plantaEntrega="S001" calle="Calle 1" noInterior="NA" codigoPostal="12345"></mabe:Entrega>
+      <mabe:Detalles>
+        <mabe:Detalle noLineaArticulo="1" codigoArticulo="CODE123" descripcion="Cigarros" unidad="UN" cantidad="2" precioSinIva="100.00" importeSinIva="200.00"></mabe:Detalle>
+      </mabe:Detalles>
+      <mabe:Descuentos tipo="NA" descripcion="NA" importe="20.00"></mabe:Descuentos>
+      <mabe:Subtotal importe="180.00"></mabe:Subtotal>
+      <mabe:Traslados>
+        <mabe:Traslado tipo="IVA" tasa="0.160000" importe="28.80"></mabe:Traslado>
+      </mabe:Traslados>
+      <mabe:Retenciones>
+        <mabe:Retencion tipo="IVA Retenido" tasa="0.106667" importe="19.20"></mabe:Retencion>
+        <mabe:Retencion tipo="ISR" tasa="0.100000" importe="18.00"></mabe:Retencion>
+      </mabe:Retenciones>
+      <mabe:Total importe="171.60"></mabe:Total>
+    </mabe:Factura>
+  </cfdi:Addenda>
+</cfdi:Comprobante>

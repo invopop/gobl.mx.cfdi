@@ -35,7 +35,12 @@ func LoadTestInvoice(name string) (*bill.Invoice, error) {
 
 // LoadTestEnvelope returns a GOBL Envelope from a file in the `test/data` folder
 func LoadTestEnvelope(name string) (*gobl.Envelope, error) {
-	src, _ := os.Open(filepath.Join(GetDataPath(), name))
+	path := filepath.Join(GetDataPath(), "convert", "in", name)
+	src, err := os.Open(path)
+	if err != nil {
+		// Backwards compatible path.
+		src, _ = os.Open(filepath.Join(GetDataPath(), name))
+	}
 
 	buf := new(bytes.Buffer)
 	if _, err := buf.ReadFrom(src); err != nil {
