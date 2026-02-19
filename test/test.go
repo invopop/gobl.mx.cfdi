@@ -20,7 +20,7 @@ func NewDocumentFrom(name string) (*cfdi.Document, error) {
 		return nil, err
 	}
 
-	return cfdi.NewDocument(env)
+	return cfdi.Convert(env)
 }
 
 // LoadTestInvoice returns a GOBL Invoice from a file in the `test/data` folder
@@ -35,7 +35,12 @@ func LoadTestInvoice(name string) (*bill.Invoice, error) {
 
 // LoadTestEnvelope returns a GOBL Envelope from a file in the `test/data` folder
 func LoadTestEnvelope(name string) (*gobl.Envelope, error) {
-	src, _ := os.Open(filepath.Join(GetDataPath(), name))
+	path := filepath.Join(GetDataPath(), "convert", "in", name)
+	src, err := os.Open(path)
+	if err != nil {
+		// Backwards compatible path.
+		src, _ = os.Open(filepath.Join(GetDataPath(), name))
+	}
 
 	buf := new(bytes.Buffer)
 	if _, err := buf.ReadFrom(src); err != nil {
@@ -80,7 +85,33 @@ func GenerateCFDIFrom(inv *bill.Invoice) (*cfdi.Document, error) {
 		return nil, err
 	}
 
-	return cfdi.NewDocument(env)
+	return cfdi.Convert(env)
+}
+
+// LoadParsedInvoice parses a CFDI XML file from the `test/data/parse/in` folder
+// and returns the resulting GOBL Invoice
+func LoadParsedInvoice(filename string) (*bill.Invoice, error) {
+	path := filepath.Join(GetDataPath(), "parse", "in", filename)
+	xmlData, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+
+	env, err := cfdi.Parse(xmlData)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := env.Calculate(); err != nil {
+		return nil, err
+	}
+
+	inv, ok := env.Extract().(*bill.Invoice)
+	if !ok {
+		return nil, fmt.Errorf("expected bill.Invoice from envelope")
+	}
+
+	return inv, nil
 }
 
 // GetDataPath returns the path to the `test/data` folder

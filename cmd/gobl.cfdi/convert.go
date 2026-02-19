@@ -56,7 +56,7 @@ func (c *convertOpts) runE(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("parsing input as GOBL Envelope: %w", err)
 	}
 
-	doc, err := cfdi.NewDocument(env)
+	doc, err := cfdi.Convert(env)
 	if err != nil {
 		return fmt.Errorf("building CFDI document: %w", err)
 	}

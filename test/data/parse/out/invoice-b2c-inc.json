@@ -1,0 +1,123 @@
+{
+	"$schema": "https://gobl.org/draft-0/envelope",
+	"head": {
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"dig": {
+			"alg": "sha256",
+			"val": "a2c6498da54bd2b140c0a73559170ce608443bce0b7a1acf91bb9d1e2bbdfb1f"
+		}
+	},
+	"doc": {
+		"$schema": "https://gobl.org/draft-0/bill/invoice",
+		"$regime": "MX",
+		"$addons": [
+			"mx-cfdi-v4"
+		],
+		"$tags": [
+			"bypass"
+		],
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"type": "standard",
+		"series": "XAMA620210DQ5",
+		"code": "000037",
+		"issue_date": "2025-10-24",
+		"issue_time": "11:38:18",
+		"currency": "MXN",
+		"tax": {
+			"ext": {
+				"mx-cfdi-doc-type": "I",
+				"mx-cfdi-issue-place": "01219",
+				"mx-cfdi-payment-method": "PUE"
+			}
+		},
+		"supplier": {
+			"name": "ALBA XKARAJAM MENDEZ",
+			"tax_id": {
+				"country": "MX",
+				"code": "XAMA620210DQ5"
+			},
+			"ext": {
+				"mx-cfdi-fiscal-regime": "612"
+			}
+		},
+		"lines": [
+			{
+				"i": 1,
+				"quantity": "1",
+				"item": {
+					"name": "Vela Matcha",
+					"price": "43.1034",
+					"ext": {
+						"mx-cfdi-prod-serv": "84141602"
+					}
+				},
+				"sum": "43.1034",
+				"taxes": [
+					{
+						"cat": "VAT",
+						"percent": "16.0%"
+					}
+				],
+				"total": "43.1034"
+			},
+			{
+				"i": 2,
+				"quantity": "1",
+				"item": {
+					"name": "Vela Milkberry",
+					"price": "25.8621",
+					"ext": {
+						"mx-cfdi-prod-serv": "84141602"
+					}
+				},
+				"sum": "25.8621",
+				"taxes": [
+					{
+						"cat": "VAT",
+						"percent": "16.0%"
+					}
+				],
+				"total": "25.8621"
+			}
+		],
+		"payment": {
+			"advances": [
+				{
+					"description": "Pago en una sola exhibición",
+					"percent": "100%",
+					"amount": "80.00",
+					"ext": {
+						"mx-cfdi-payment-means": "01"
+					}
+				}
+			]
+		},
+		"totals": {
+			"sum": "68.97",
+			"total": "68.97",
+			"taxes": {
+				"categories": [
+					{
+						"code": "VAT",
+						"rates": [
+							{
+								"base": "68.97",
+								"percent": "16.0%",
+								"amount": "11.03"
+							}
+						],
+						"amount": "11.03"
+					}
+				],
+				"sum": "11.03"
+			},
+			"tax": "11.03",
+			"total_with_tax": "80.00",
+			"payable": "80.00",
+			"due": "0.00"
+		}
+	},
+	"sigs": [
+		""
+	]
+}

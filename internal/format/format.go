@@ -1,5 +1,5 @@
 // Package format contains helps to help format output.
-package format
+package format //nolint:revive
 
 import (
 	"fmt"

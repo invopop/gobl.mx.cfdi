@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 
 	"github.com/invopop/gobl.cfdi/internal/format"
-	"github.com/invopop/gobl/addons/mx/cfdi"
+	addon "github.com/invopop/gobl/addons/mx/cfdi"
 	"github.com/invopop/gobl/regimes/mx"
 	"github.com/invopop/gobl/tax"
 )
@@ -54,7 +54,7 @@ type ECCTraslado struct {
 	Importe    string `xml:",attr"`
 }
 
-func addEstadoCuentaCombustible(doc *Document, fc *cfdi.FuelAccountBalance) {
+func addEstadoCuentaCombustible(doc *Document, fc *addon.FuelAccountBalance) {
 	ecc := &EstadoDeCuentaCombustible{
 		Version:       ECCVersion,
 		TipoOperacion: ECCTipoOperacion,
@@ -68,11 +68,11 @@ func addEstadoCuentaCombustible(doc *Document, fc *cfdi.FuelAccountBalance) {
 
 	doc.ECCNamespace = ECCNamespace
 	doc.SchemaLocation = doc.SchemaLocation + " " + format.SchemaLocation(ECCNamespace, ECCSchemaLocation)
-	doc.AppendComplemento(ecc)
+	doc.ComplementoEstadoCuentaCombustible = ecc
 }
 
 // nolint:misspell
-func newECCConceptos(lines []*cfdi.FuelAccountLine) []*ECCConcepto {
+func newECCConceptos(lines []*addon.FuelAccountLine) []*ECCConcepto {
 	cs := make([]*ECCConcepto, len(lines))
 
 	for i, l := range lines {
@@ -95,7 +95,7 @@ func newECCConceptos(lines []*cfdi.FuelAccountLine) []*ECCConcepto {
 	return cs
 }
 
-func newECCTraslados(taxes []*cfdi.FuelAccountTax) []*ECCTraslado {
+func newECCTraslados(taxes []*addon.FuelAccountTax) []*ECCTraslado {
 	ts := make([]*ECCTraslado, len(taxes))
 
 	for i, t := range taxes {

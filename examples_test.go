@@ -1,9 +1,9 @@
 package cfdi_test
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -12,30 +12,46 @@ import (
 	"github.com/invopop/gobl"
 	cfdi "github.com/invopop/gobl.cfdi"
 	"github.com/invopop/gobl.cfdi/test"
+	"github.com/invopop/gobl/bill"
+	"github.com/invopop/gobl/dsig"
+	"github.com/invopop/gobl/uuid"
 	"github.com/lestrrat-go/libxml2"
 	"github.com/lestrrat-go/libxml2/xsd"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-var updateOut = flag.Bool("update", false, "Update the JSON and XML files in test/data and test/data/out")
+const (
+	pathConvert = "convert"
+	pathParse   = "parse"
+	pathIn      = "in"
+	pathOut     = "out"
+)
 
-func TestXMLGeneration(t *testing.T) {
+var (
+	updateOut = flag.Bool("update", false, "Update the JSON and XML files in test/data/convert and test/data/parse")
+
+	staticUUID uuid.UUID = "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2"
+)
+
+func TestConvertExamples(t *testing.T) {
 	schema, err := loadSchema()
 	require.NoError(t, err)
 
-	examples, err := lookupExamples()
-	require.NoError(t, err)
-
+	examples := findSourceFiles(t, pathConvert, "*.json")
 	for _, example := range examples {
-		name := fmt.Sprintf("should convert %s example file successfully", example)
+		inName := filepath.Base(example)
+		outName := strings.Replace(inName, ".json", ".xml", 1)
 
-		t.Run(name, func(t *testing.T) {
-			data, env, err := convertExample(example)
+		t.Run(inName, func(t *testing.T) {
+			env := loadEnvelope(t, inputFilepath(pathConvert, inName))
+			doc, err := cfdi.Convert(env)
 			require.NoError(t, err)
 
-			outPath := filepath.Join(test.GetDataPath(), "out", strings.TrimSuffix(example, ".json")+".xml")
+			data, err := doc.Bytes()
+			require.NoError(t, err)
 
+			outPath := outputFilepath(pathConvert, outName)
 			if *updateOut {
 				errs := validateDoc(schema, data)
 				for _, e := range errs {
@@ -45,24 +61,53 @@ func TestXMLGeneration(t *testing.T) {
 					assert.Fail(t, "Invalid XML:\n"+string(data))
 					return
 				}
-
-				// Write the XML file
-				err = os.WriteFile(outPath, data, 0644)
-				require.NoError(t, err)
-
-				// Update the (just re-calculated) GOBL file as well
-				jsData, _ := json.MarshalIndent(env, "", "\t")
-				err = os.WriteFile(filepath.Join(test.GetDataPath(), example), append(jsData, '\n'), 0644)
-				require.NoError(t, err)
-
+				require.NoError(t, os.MkdirAll(filepath.Dir(outPath), 0755))
+				require.NoError(t, os.WriteFile(outPath, data, 0644))
 				return
 			}
 
-			expected, err := os.ReadFile(outPath)
+			output := loadOutputFile(t, pathConvert, outName)
+			assert.Equal(t, strings.TrimSpace(string(output)), strings.TrimSpace(string(data)), "Output should match the expected XML. Update with --update flag.")
+		})
+	}
+}
 
-			require.False(t, os.IsNotExist(err), "output file %s missing, run tests with `--update` flag to create", filepath.Base(outPath))
+func TestParseExamples(t *testing.T) {
+	examples := findSourceFiles(t, pathParse, "*.xml")
+	for _, example := range examples {
+		inName := filepath.Base(example)
+		outName := strings.Replace(inName, ".xml", ".json", 1)
+
+		t.Run(inName, func(t *testing.T) {
+			xmlData, err := os.ReadFile(example)
 			require.NoError(t, err)
-			require.Equal(t, string(expected), string(data), "output file %s does not match, run tests with `--update` flag to update", filepath.Base(outPath))
+
+			env, err := cfdi.Parse(xmlData)
+			require.NoError(t, err)
+
+			// Set the static UUID to avoid different UUIDs between executions.
+			env.Head.UUID = staticUUID
+			if inv, ok := env.Extract().(*bill.Invoice); ok {
+				inv.UUID = staticUUID
+			}
+			require.NoError(t, env.Calculate())
+
+			// Add a mock signature to make the envelope with the stamps valid
+			env.Signatures = []*dsig.Signature{new(dsig.Signature)}
+
+			writeEnvelope(t, dataPath(pathParse, pathOut, outName), env)
+
+			data, err := json.MarshalIndent(env, "", "\t")
+			require.NoError(t, err)
+
+			output := loadOutputFile(t, pathParse, outName)
+			var expectedEnv gobl.Envelope
+			require.NoError(t, json.Unmarshal(output, &expectedEnv))
+
+			expectedData, err := json.MarshalIndent(expectedEnv, "", "\t")
+			require.NoError(t, err)
+
+			assert.JSONEq(t, string(expectedData), string(data), "Invoice should match the expected JSON. Update with --update flag.")
 		})
 	}
 }
@@ -77,36 +122,62 @@ func loadSchema() (*xsd.Schema, error) {
 	return schema, nil
 }
 
-func lookupExamples() ([]string, error) {
-	examples, err := filepath.Glob(filepath.Join(test.GetDataPath(), "*.json"))
-	if err != nil {
-		return nil, err
-	}
+func loadEnvelope(t *testing.T, path string) *gobl.Envelope {
+	t.Helper()
 
-	for i, example := range examples {
-		examples[i] = filepath.Base(example)
-	}
+	src, err := os.ReadFile(path)
+	require.NoError(t, err)
 
-	return examples, nil
+	env := new(gobl.Envelope)
+	require.NoError(t, json.Unmarshal(src, env))
+	require.NoError(t, env.Calculate())
+	require.NoError(t, env.Validate())
+
+	writeEnvelope(t, path, env)
+
+	return env
 }
 
-func convertExample(example string) ([]byte, *gobl.Envelope, error) {
-	env, err := test.LoadTestEnvelope(example)
-	if err != nil {
-		return nil, nil, err
+func writeEnvelope(t *testing.T, path string, env *gobl.Envelope) {
+	t.Helper()
+	if !*updateOut {
+		return
 	}
+	require.NoError(t, env.Validate())
+	data, err := json.MarshalIndent(env, "", "\t")
+	require.NoError(t, err)
+	require.NoError(t, os.WriteFile(path, append(data, '\n'), 0644))
+}
 
-	doc, err := cfdi.NewDocument(env)
-	if err != nil {
-		return nil, nil, err
+func outputFilepath(path, name string) string {
+	return filepath.Join(dataPath(path, pathOut, name))
+}
+
+func inputFilepath(path, name string) string {
+	return filepath.Join(dataPath(path, pathIn, name))
+}
+
+func loadOutputFile(t *testing.T, path, name string) []byte {
+	t.Helper()
+	src, err := os.Open(outputFilepath(path, name))
+	require.NoError(t, err)
+	buf := new(bytes.Buffer)
+	if _, err := buf.ReadFrom(src); err != nil {
+		require.NoError(t, err)
 	}
+	return buf.Bytes()
+}
 
-	data, err := doc.Bytes()
-	if err != nil {
-		return nil, nil, err
-	}
+func findSourceFiles(t *testing.T, path, pattern string) []string {
+	path = inputFilepath(path, pattern)
+	files, err := filepath.Glob(path)
+	require.NoError(t, err)
+	return files
+}
 
-	return append(data, '\n'), env, nil
+func dataPath(files ...string) string {
+	files = append([]string{test.GetDataPath()}, files...)
+	return filepath.Join(files...)
 }
 
 func validateDoc(schema *xsd.Schema, doc []byte) []error {

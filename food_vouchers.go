@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 
 	"github.com/invopop/gobl.cfdi/internal/format"
-	"github.com/invopop/gobl/addons/mx/cfdi"
+	addon "github.com/invopop/gobl/addons/mx/cfdi"
 )
 
 // VD Schema constants
@@ -39,7 +39,7 @@ type VDConcepto struct {
 	Importe            string `xml:"importe,attr"`
 }
 
-func addValesDeDespensa(doc *Document, fvc *cfdi.FoodVouchers) {
+func addValesDeDespensa(doc *Document, fvc *addon.FoodVouchers) {
 	vd := &ValesDeDespensa{
 		Version:       VDVersion,
 		TipoOperacion: VDTipoOperacion,
@@ -53,10 +53,10 @@ func addValesDeDespensa(doc *Document, fvc *cfdi.FoodVouchers) {
 
 	doc.VDNamespace = VDNamespace
 	doc.SchemaLocation = doc.SchemaLocation + " " + format.SchemaLocation(VDNamespace, VDSchemaLocation)
-	doc.AppendComplemento(vd)
+	doc.ComplementoValesDeDespensa = vd
 }
 
-func newVDConceptos(lines []*cfdi.FoodVouchersLine) []*VDConcepto {
+func newVDConceptos(lines []*addon.FoodVouchersLine) []*VDConcepto {
 	cs := make([]*VDConcepto, len(lines))
 
 	for i, l := range lines {

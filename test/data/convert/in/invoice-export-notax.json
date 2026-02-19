@@ -1,0 +1,71 @@
+{
+	"$schema": "https://gobl.org/draft-0/envelope",
+	"head": {
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"dig": {
+			"alg": "sha256",
+			"val": "740ab9556981d1b862dee29a6b79fd2b49a8c0bdd4f992d07ebf0e56ae003d23"
+		}
+	},
+	"doc": {
+		"$schema": "https://gobl.org/draft-0/bill/invoice",
+		"$regime": "MX",
+		"$addons": [
+			"mx-cfdi-v4"
+		],
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"type": "standard",
+		"series": "LMC",
+		"code": "0010",
+		"issue_date": "2023-05-29",
+		"issue_time": "12:00:00",
+		"currency": "MXN",
+		"tax": {
+			"ext": {
+				"mx-cfdi-doc-type": "I",
+				"mx-cfdi-issue-place": "26015",
+				"mx-cfdi-payment-method": "PPD"
+			}
+		},
+		"supplier": {
+			"name": "ESCUELA KEMPER URGATE",
+			"tax_id": {
+				"country": "MX",
+				"code": "EKU9003173C9"
+			},
+			"ext": {
+				"mx-cfdi-fiscal-regime": "601"
+			}
+		},
+		"customer": {
+			"name": "EXAMPLE CUSTOMER S.A.S.",
+			"tax_id": {
+				"country": "CO",
+				"code": "9014514805",
+				"type": "tin"
+			}
+		},
+		"lines": [
+			{
+				"i": 1,
+				"quantity": "2",
+				"item": {
+					"name": "Cigarros",
+					"price": "100.00",
+					"ext": {
+						"mx-cfdi-prod-serv": "50211502"
+					}
+				},
+				"sum": "200.00",
+				"total": "200.00"
+			}
+		],
+		"totals": {
+			"sum": "200.00",
+			"total": "200.00",
+			"tax": "0.00",
+			"total_with_tax": "200.00",
+			"payable": "200.00"
+		}
+	}
+}

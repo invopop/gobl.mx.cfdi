@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/invopop/gobl.cfdi/test"
-	gcfdi "github.com/invopop/gobl/addons/mx/cfdi"
+	addon "github.com/invopop/gobl/addons/mx/cfdi"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/num"
 	"github.com/invopop/gobl/pay"
@@ -32,11 +32,13 @@ func TestComprobanteIngreso(t *testing.T) {
 		assert.Equal(t, "211.36", doc.Total.String())
 		assert.Equal(t, "MXN", doc.Moneda)
 		assert.Equal(t, "01", doc.Exportacion)
-		assert.Equal(t, "PUE", doc.MetodoPago.String())
+		assert.Equal(t, "PUE", doc.MetodoPago)
 		assert.Equal(t, "03", doc.FormaPago)
 		assert.Equal(t, "Pago a 30 días.", doc.CondicionesDePago)
 
-		assert.Nil(t, doc.Complemento)
+		assert.Nil(t, doc.ComplementoTimbreFiscalDigital)
+		assert.Nil(t, doc.ComplementoValesDeDespensa)
+		assert.Nil(t, doc.ComplementoEstadoCuentaCombustible)
 	})
 
 	t.Run("should return the proper MetodoPago and FormaPago", func(t *testing.T) {
@@ -45,7 +47,7 @@ func TestComprobanteIngreso(t *testing.T) {
 		// No advances
 		inv.Payment.Advances = nil
 		doc, _ := test.GenerateCFDIFrom(inv)
-		assert.Equal(t, "PPD", doc.MetodoPago.String())
+		assert.Equal(t, "PPD", doc.MetodoPago)
 		assert.Equal(t, "99", doc.FormaPago)
 
 		// Partial settlement
@@ -55,17 +57,17 @@ func TestComprobanteIngreso(t *testing.T) {
 			Key:         pay.MeansKeyCash,
 		})
 		doc, _ = test.GenerateCFDIFrom(inv)
-		assert.Equal(t, "PPD", doc.MetodoPago.String())
+		assert.Equal(t, "PPD", doc.MetodoPago)
 		assert.Equal(t, "99", doc.FormaPago)
 
 		// Full settlement
 		inv.Payment.Advances = append(inv.Payment.Advances, &pay.Advance{
 			Percent:     num.NewPercentage(60, 2),
 			Description: "Second partial settlement",
-			Key:         pay.MeansKeyOnline.With(gcfdi.MeansKeyWallet),
+			Key:         pay.MeansKeyOnline.With(addon.MeansKeyWallet),
 		})
 		doc, _ = test.GenerateCFDIFrom(inv)
-		assert.Equal(t, "PUE", doc.MetodoPago.String())
+		assert.Equal(t, "PUE", doc.MetodoPago)
 		assert.Equal(t, "05", doc.FormaPago)
 
 		// Total amount is zero
@@ -76,7 +78,7 @@ func TestComprobanteIngreso(t *testing.T) {
 			Key:         pay.MeansKeyCash,
 		}}
 		doc, _ = test.GenerateCFDIFrom(inv)
-		assert.Equal(t, "PUE", doc.MetodoPago.String())
+		assert.Equal(t, "PUE", doc.MetodoPago)
 		assert.Equal(t, "01", doc.FormaPago)
 	})
 
@@ -102,11 +104,13 @@ func TestComprobanteIngreso(t *testing.T) {
 		assert.Equal(t, "93.84", doc.Total.String())
 		assert.Equal(t, "MXN", doc.Moneda)
 		assert.Equal(t, "01", doc.Exportacion)
-		assert.Equal(t, "PPD", doc.MetodoPago.String())
+		assert.Equal(t, "PPD", doc.MetodoPago)
 		assert.Equal(t, "99", doc.FormaPago)
 		assert.Equal(t, "Condiciones de pago", doc.CondicionesDePago)
 
-		assert.Nil(t, doc.Complemento)
+		assert.Nil(t, doc.ComplementoTimbreFiscalDigital)
+		assert.Nil(t, doc.ComplementoValesDeDespensa)
+		assert.Nil(t, doc.ComplementoEstadoCuentaCombustible)
 	})
 }
 

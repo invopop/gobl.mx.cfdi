@@ -1,0 +1,146 @@
+{
+	"$schema": "https://gobl.org/draft-0/envelope",
+	"head": {
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"dig": {
+			"alg": "sha256",
+			"val": "ed5e6200e5b831c30cc1124af048fb00e0b04bad4c07a86fe0481acdbf76827d"
+		}
+	},
+	"doc": {
+		"$schema": "https://gobl.org/draft-0/bill/invoice",
+		"$regime": "MX",
+		"$addons": [
+			"mx-cfdi-v4"
+		],
+		"$tags": [
+			"bypass"
+		],
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"type": "credit-note",
+		"series": "CN",
+		"code": "0003",
+		"issue_date": "2023-07-26",
+		"issue_time": "12:00:00",
+		"currency": "MXN",
+		"preceding": [
+			{
+				"code": "1fac4464-1111-0000-1111-cd37179db12e",
+				"stamps": [
+					{
+						"prv": "sat-uuid",
+						"val": "1fac4464-1111-0000-1111-cd37179db12e"
+					}
+				]
+			}
+		],
+		"tax": {
+			"ext": {
+				"mx-cfdi-doc-type": "E",
+				"mx-cfdi-issue-place": "26015",
+				"mx-cfdi-payment-method": "PPD",
+				"mx-cfdi-rel-type": "01"
+			}
+		},
+		"supplier": {
+			"name": "ESCUELA KEMPER URGATE",
+			"tax_id": {
+				"country": "MX",
+				"code": "EKU9003173C9"
+			},
+			"ext": {
+				"mx-cfdi-fiscal-regime": "601"
+			}
+		},
+		"customer": {
+			"name": "UNIVERSIDAD ROBOTICA ESPAÑOLA",
+			"tax_id": {
+				"country": "MX",
+				"code": "URE180429TM6"
+			},
+			"addresses": [
+				{
+					"code": "86991"
+				}
+			],
+			"ext": {
+				"mx-cfdi-fiscal-regime": "601",
+				"mx-cfdi-use": "G03"
+			}
+		},
+		"lines": [
+			{
+				"i": 1,
+				"quantity": "1.33",
+				"item": {
+					"name": "Cobro por tarjetas",
+					"price": "1.32",
+					"ext": {
+						"mx-cfdi-prod-serv": "84141602"
+					}
+				},
+				"sum": "1.76",
+				"taxes": [
+					{
+						"cat": "VAT",
+						"key": "zero",
+						"percent": "0.0%"
+					}
+				],
+				"total": "1.76"
+			},
+			{
+				"i": 2,
+				"quantity": "1",
+				"item": {
+					"name": "Porcentaje sobre GMV",
+					"price": "0.0087",
+					"unit": "service",
+					"ext": {
+						"mx-cfdi-prod-serv": "80141628"
+					}
+				},
+				"sum": "0.01",
+				"taxes": [
+					{
+						"cat": "VAT",
+						"key": "zero",
+						"percent": "0.0%"
+					}
+				],
+				"total": "0.01"
+			}
+		],
+		"payment": {
+			"terms": {
+				"notes": "Condiciones de pago"
+			}
+		},
+		"totals": {
+			"sum": "1.77",
+			"total": "1.77",
+			"taxes": {
+				"categories": [
+					{
+						"code": "VAT",
+						"rates": [
+							{
+								"base": "1.77",
+								"percent": "0.0%",
+								"amount": "0.00"
+							}
+						],
+						"amount": "0.00"
+					}
+				],
+				"sum": "0.00"
+			},
+			"tax": "0.00",
+			"total_with_tax": "1.77",
+			"payable": "1.77"
+		}
+	},
+	"sigs": [
+		""
+	]
+}
