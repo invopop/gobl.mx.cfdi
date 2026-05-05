@@ -9,14 +9,14 @@ import (
 )
 
 var goblTaxCategoryMap = map[string]cbc.Code{
-	"002": tax.CategoryVAT,
-	"003": mx.TaxCategoryIEPS,
+	satTaxVAT:  tax.CategoryVAT,
+	satTaxIEPS: mx.TaxCategoryIEPS,
 }
 
 var goblRetainedTaxCategoryMap = map[string]cbc.Code{
-	"001": mx.TaxCategoryISR,
-	"002": mx.TaxCategoryRVAT,
-	"003": mx.TaxCategoryRIEPS,
+	satTaxISR:  mx.TaxCategoryISR,
+	satTaxVAT:  mx.TaxCategoryRVAT,
+	satTaxIEPS: mx.TaxCategoryRIEPS,
 }
 
 func goblLineTaxes(c *Concepto) tax.Set {

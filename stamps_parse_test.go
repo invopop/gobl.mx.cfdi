@@ -36,7 +36,7 @@ func TestParseStamps(t *testing.T) {
 			{
 				name:  "Provider RFC",
 				stamp: mx.StampSATProviderRFC,
-				value: "SPR190613I52",
+				value: testProvCertifRFC,
 			},
 			{
 				name:  "SAT Serial",
@@ -66,7 +66,7 @@ func TestParseStamps(t *testing.T) {
 			{
 				name:  "Chain",
 				stamp: mx.StampSATChain,
-				value: "||1.1|fbff00b3-6577-437b-b15e-cbf25be09663|2026-02-06T00:08:17|SPR190613I52|rnjrKDV2nqcILrqkDA+l+f1PhEZisAMEiYwQogTsijNF1nap8AkLYGsuV5KfEy/SUR+M1V7I4d/JH/2m6yBKphM/C6W/uNXJqevTQQ6zO+I2tlFb9yx4/Zz6pqkCjn3MQAt4fFDY1XpKn1HwD+gHiFGayjvsISrNr34rFDOCj9L/p9JJ5H+z3dwI728DRVmqogts7fNPhZY6ou0sZwkGIFaOUjg64b+OfVj2GnP1s0UJFMjsftEmYpdkF3JNtqunAF+vXL3/wE93wVleccvVBjs69AVGBSNedqjeEhgtjQrGeT56cPp/J0xt6Na3J1mAdmIyo49Of+8uLk0GW2BGVg==|30001000000500003456||",
+				value: "||1.1|fbff00b3-6577-437b-b15e-cbf25be09663|2026-02-06T00:08:17|" + testProvCertifRFC + "|rnjrKDV2nqcILrqkDA+l+f1PhEZisAMEiYwQogTsijNF1nap8AkLYGsuV5KfEy/SUR+M1V7I4d/JH/2m6yBKphM/C6W/uNXJqevTQQ6zO+I2tlFb9yx4/Zz6pqkCjn3MQAt4fFDY1XpKn1HwD+gHiFGayjvsISrNr34rFDOCj9L/p9JJ5H+z3dwI728DRVmqogts7fNPhZY6ou0sZwkGIFaOUjg64b+OfVj2GnP1s0UJFMjsftEmYpdkF3JNtqunAF+vXL3/wE93wVleccvVBjs69AVGBSNedqjeEhgtjQrGeT56cPp/J0xt6Na3J1mAdmIyo49Of+8uLk0GW2BGVg==|30001000000500003456||",
 			},
 			{
 				name:  "URL",
