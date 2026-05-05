@@ -42,13 +42,20 @@ type Impuesto struct {
 	TipoFactor string      `xml:",attr,omitempty"`
 }
 
+// SAT tax type codes used in the Impuesto field
+const (
+	satTaxISR  = "001"
+	satTaxVAT  = "002"
+	satTaxIEPS = "003"
+)
+
 // Map of tax categories to SAT tax types
 var taxCategoryMap = map[cbc.Code]string{
-	mx.TaxCategoryISR:   "001",
-	tax.CategoryVAT:     "002",
-	mx.TaxCategoryRVAT:  "002",
-	mx.TaxCategoryIEPS:  "003",
-	mx.TaxCategoryRIEPS: "003",
+	mx.TaxCategoryISR:   satTaxISR,
+	tax.CategoryVAT:     satTaxVAT,
+	mx.TaxCategoryRVAT:  satTaxVAT,
+	mx.TaxCategoryIEPS:  satTaxIEPS,
+	mx.TaxCategoryRIEPS: satTaxIEPS,
 }
 
 func newImpuestos(totals *bill.Totals, lines []*bill.Line, currency currency.Code) *Impuestos {

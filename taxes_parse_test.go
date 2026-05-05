@@ -122,4 +122,10 @@ func TestParseImpuestos(t *testing.T) {
 			}
 		}
 	})
+
+	t.Run("should not panic when TotalImpuestosTrasladados is missing", func(t *testing.T) {
+		require.NotPanics(t, func() {
+			_, _ = test.LoadParsedInvoice("invoice-retention-only.xml")
+		})
+	})
 }
