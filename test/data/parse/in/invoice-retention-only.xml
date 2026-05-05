@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd" Version="4.0" TipoDeComprobante="I" Serie="LMC" Folio="0011" Fecha="2023-05-29T12:00:00" LugarExpedicion="26015" SubTotal="200.00" Total="180.00" Moneda="MXN" Exportacion="01" MetodoPago="PUE" FormaPago="03" Sello="" NoCertificado="00000000000000000000" Certificado="">
+  <cfdi:Emisor Rfc="EKU9003173C9" Nombre="ESCUELA KEMPER URGATE" RegimenFiscal="601"></cfdi:Emisor>
+  <cfdi:Receptor Rfc="URE180429TM6" Nombre="UNIVERSIDAD ROBOTICA ESPAÑOLA" DomicilioFiscalReceptor="65000" RegimenFiscalReceptor="601" UsoCFDI="G01"></cfdi:Receptor>
+  <cfdi:Conceptos>
+    <cfdi:Concepto ClaveProdServ="84111506" Cantidad="1" ClaveUnidad="E48" Descripcion="Servicios profesionales" ValorUnitario="200.00" Importe="200.00" ObjetoImp="02">
+      <cfdi:Impuestos>
+        <cfdi:Retenciones>
+          <cfdi:Retencion Base="200.00" Importe="20.00" Impuesto="001" TasaOCuota="0.100000" TipoFactor="Tasa"></cfdi:Retencion>
+        </cfdi:Retenciones>
+      </cfdi:Impuestos>
+    </cfdi:Concepto>
+  </cfdi:Conceptos>
+  <cfdi:Impuestos TotalImpuestosRetenidos="20.00">
+    <cfdi:Retenciones>
+      <cfdi:Retencion Importe="20.00" Impuesto="001"></cfdi:Retencion>
+    </cfdi:Retenciones>
+  </cfdi:Impuestos>
+</cfdi:Comprobante>

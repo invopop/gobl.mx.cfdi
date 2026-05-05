@@ -152,15 +152,20 @@ func goblNewTaxTotal(doc *Document) *tax.Total {
 	}
 
 	tt := &tax.Total{
-		Sum:      *doc.Impuestos.TotalImpuestosTrasladados,
+		Sum:      zero,
 		Retained: doc.Impuestos.TotalImpuestosRetenidos,
+	}
+	if doc.Impuestos.TotalImpuestosTrasladados != nil {
+		tt.Sum = *doc.Impuestos.TotalImpuestosTrasladados
 	}
 
 	if doc.Impuestos.Traslados != nil {
 		for _, t := range doc.Impuestos.Traslados.Traslado {
 			if t.Impuesto == taxCategoryMap[mx.TaxCategoryIEPS] {
 				// IEPS is handled as a line charge, subtract it from the total
-				tt.Sum = tt.Sum.MatchPrecision(*t.Importe).Subtract(*t.Importe)
+				if t.Importe != nil {
+					tt.Sum = tt.Sum.MatchPrecision(*t.Importe).Subtract(*t.Importe)
+				}
 				continue
 			}
 			cat := goblTaxCategory(t, false)
