@@ -13,9 +13,9 @@ require (
 
 require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
-	github.com/buger/jsonparser v1.1.1 // indirect
+	github.com/buger/jsonparser v1.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/go-jose/go-jose/v4 v4.0.5 // indirect
+	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/invopop/yaml v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
@@ -37,7 +37,6 @@ require (
 	github.com/invopop/validation v0.8.0
 	github.com/lestrrat-go/libxml2 v0.0.0-20201123224832-e6d9de61b80d
 	github.com/stretchr/testify v1.10.0
-	golang.org/x/crypto v0.47.0 // indirect
 )
 
 // replace github.com/invopop/gobl => ../gobl
