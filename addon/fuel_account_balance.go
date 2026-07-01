@@ -219,7 +219,7 @@ func fuelAccountLineTotalValid(val any) bool {
 	if !ok || line == nil || line.Item == nil {
 		return true
 	}
-	expected := line.Quantity.Multiply(line.Item.Price).Rescale(2)
+	expected := line.Quantity.Multiply(line.Item.Price).Rescale(FuelAccountTotalsPrecision)
 	return line.Total.Equals(expected)
 }
 
