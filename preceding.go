@@ -1,7 +1,7 @@
 package cfdi
 
 import (
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
+	"github.com/invopop/gobl.cfdi/addon"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/org"
 	"github.com/invopop/gobl/regimes/mx"
@@ -54,5 +54,5 @@ func lookupTipoRelacion(inv *bill.Invoice) string {
 		return ""
 	}
 
-	return inv.Tax.Ext[addon.ExtKeyRelType].String()
+	return inv.Tax.Ext.Get(addon.ExtKeyRelType).String()
 }

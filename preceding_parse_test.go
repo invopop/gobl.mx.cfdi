@@ -3,8 +3,8 @@ package cfdi_test
 import (
 	"testing"
 
+	"github.com/invopop/gobl.cfdi/addon"
 	"github.com/invopop/gobl.cfdi/test"
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/regimes/mx"
 	"github.com/stretchr/testify/assert"
@@ -16,7 +16,7 @@ func TestParseCfdiRelacionados(t *testing.T) {
 		inv, err := test.LoadParsedInvoice("credit-note.xml")
 		require.NoError(t, err)
 
-		assert.Equal(t, cbc.Code("01"), inv.Tax.Ext[addon.ExtKeyRelType])
+		assert.Equal(t, cbc.Code("01"), inv.Tax.Ext.Get(addon.ExtKeyRelType))
 
 		require.Len(t, inv.Preceding, 1)
 		prec := inv.Preceding[0]

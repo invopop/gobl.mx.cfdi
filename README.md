@@ -1,19 +1,69 @@
-# GOBL to CFDI Conversion
+# GOBL ➡️ Mexico CFDI
 
-Convert GOBL documents in the Mexican CFDI (Comprobante Fiscal Digital por Internet) format.
+Mexican CFDI (Comprobante Fiscal Digital por Internet) support for [GOBL](https://github.com/invopop/gobl): the GOBL **addon** (extensions, normalizers, scenarios, and validation rules) plus the **converter** that turns a GOBL envelope into SAT-compliant CFDI XML — and parses it back.
 
-Copyright [Invopop Ltd.](https://invopop.com) 2023. Released publicly under the [Apache License Version 2.0](LICENSE). For commercial licenses please contact the [dev team at invopop](mailto:dev@invopop.com). In order to accept contributions to this library we will require transferring copyrights to Invopop Ltd.
+Released publicly under the Apache 2.0 [LICENSE](LICENSE), Copyright [Invopop Ltd.](https://invopop.com) 2023. For commercial licenses please contact the [dev team at invopop](mailto:dev@invopop.com). In order to accept contributions to this library we will require transferring copyrights to Invopop Ltd.
 
 [![Lint](https://github.com/invopop/gobl.cfdi/actions/workflows/lint.yaml/badge.svg)](https://github.com/invopop/gobl.cfdi/actions/workflows/lint.yaml)
 [![Test Go](https://github.com/invopop/gobl.cfdi/actions/workflows/test.yaml/badge.svg)](https://github.com/invopop/gobl.cfdi/actions/workflows/test.yaml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/invopop/gobl.cfdi)](https://goreportcard.com/report/github.com/invopop/gobl.cfdi)
+[![codecov](https://codecov.io/gh/invopop/gobl.cfdi/graph/badge.svg)](https://codecov.io/gh/invopop/gobl.cfdi)
 [![GoDoc](https://godoc.org/github.com/invopop/gobl.cfdi?status.svg)](https://godoc.org/github.com/invopop/gobl.cfdi)
 ![Latest Tag](https://img.shields.io/github/v/tag/invopop/gobl.cfdi)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/invopop/gobl.cfdi)
 
+The [`addon/`](addon) package implements the extensions, normalizers, scenarios,
+and validation rules that GOBL documents need in order to comply with the
+Mexican tax authority (SAT) CFDI v4.0 standard:
+
+- **CFDI v4** (`mx-cfdi-v4`) — invoices, payments, and the SAT extensions
+  (`mx-cfdi-*`) required to issue and stamp a Comprobante Fiscal Digital por
+  Internet.
+
+It also ships the CFDI **complements** as GOBL documents:
+
+- `FuelAccountBalance` — *Estado de Cuenta de Combustibles* for electronic fuel
+  wallets.
+- `FoodVouchers` — *Vales de Despensa* food voucher reports.
+
+## Layout
+
+- [`addon/`](addon) — the GOBL addon: extensions, normalizers, scenarios,
+  validation rules, and the CFDI complement documents that register into GOBL on
+  import. Importing it registers the `mx-cfdi-*` addon keys in GOBL's global
+  registry.
+- the module root — the converter that turns a GOBL envelope into CFDI XML and
+  parses CFDI XML back into GOBL, plus [addendas](addendas) and a
+  [command-line tool](cmd/gobl.cfdi).
+
 ## Usage
 
-### Go Package
+### Addon
+
+Unlike the converter, this is a true GOBL **addon**: it registers extensions,
+normalizers, and validation rules into GOBL's global registry. Add a blank
+import so it registers itself, then use GOBL as normal:
+
+```go
+import (
+    "github.com/invopop/gobl"
+    _ "github.com/invopop/gobl.cfdi/addon"
+)
+```
+
+Declare the addon on a document (or let the regime/scenario add it) and
+`Calculate` + `Validate` will run the full CFDI normalization and rules. The
+converter imports the addon automatically, so consumers that only convert do not
+need the blank import.
+
+> **Note**: the `mx-cfdi-*` keys are listed in GOBL core's approved
+> external-addon registry, so they are recognised as valid `$addons` values in
+> the JSON Schema. The runtime check stays strict, however: a document declaring
+> an `mx-cfdi-*` addon will fail validation with `add-on must be registered`
+> unless this module (the addon package) is imported. Any service that processes
+> Mexican CFDI documents must import it.
+
+### Converter
 
 Usage of the CFDI conversion library is quite straight forward. You must first have a GOBL Envelope including an invoice for Mexico ready to convert. There are some samples here in the test/data directory.
 
@@ -102,3 +152,7 @@ Which should produce something like:
   </cfdi:Impuestos>
 </cfdi:Comprobante>
 ```
+
+## License
+
+Apache 2.0 — see [LICENSE](./LICENSE).

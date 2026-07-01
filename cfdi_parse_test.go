@@ -3,8 +3,8 @@ package cfdi_test
 import (
 	"testing"
 
+	"github.com/invopop/gobl.cfdi/addon"
 	"github.com/invopop/gobl.cfdi/test"
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/currency"
@@ -24,9 +24,9 @@ func TestParseComprobanteIngreso(t *testing.T) {
 		assert.Equal(t, "12:00:00", inv.IssueTime.String())
 		assert.Equal(t, currency.MXN, inv.Currency)
 
-		assert.Equal(t, cbc.Code("I"), inv.Tax.Ext[addon.ExtKeyDocType])
-		assert.Equal(t, cbc.Code("26015"), inv.Tax.Ext[addon.ExtKeyIssuePlace])
-		assert.Equal(t, cbc.Code("PUE"), inv.Tax.Ext[addon.ExtKeyPaymentMethod])
+		assert.Equal(t, cbc.Code("I"), inv.Tax.Ext.Get(addon.ExtKeyDocType))
+		assert.Equal(t, cbc.Code("26015"), inv.Tax.Ext.Get(addon.ExtKeyIssuePlace))
+		assert.Equal(t, cbc.Code("PUE"), inv.Tax.Ext.Get(addon.ExtKeyPaymentMethod))
 
 		// After discount: 200.2020 + 10.50 + 10.00 = 220.70
 		assert.Equal(t, "220.70", inv.Totals.Sum.String())
@@ -48,7 +48,7 @@ func TestParseComprobanteIngreso(t *testing.T) {
 		assert.Equal(t, "Pago en una sola exhibición", adv.Description)
 		assert.Equal(t, "100%", adv.Percent.String())
 		assert.Equal(t, "211.36", adv.Amount.String())
-		assert.Equal(t, cbc.Code("03"), adv.Ext[addon.ExtKeyPaymentMeans])
+		assert.Equal(t, cbc.Code("03"), adv.Ext.Get(addon.ExtKeyPaymentMeans))
 	})
 
 	t.Run("should parse exchange rate when currency is not MXN", func(t *testing.T) {
@@ -71,7 +71,7 @@ func TestParseComprobanteIngreso(t *testing.T) {
 		assert.Equal(t, cbc.Code("00001"), inv.Code)
 		assert.Equal(t, "2023-07-10", inv.IssueDate.String())
 		assert.Equal(t, currency.MXN, inv.Currency)
-		assert.Equal(t, cbc.Code("PPD"), inv.Tax.Ext[addon.ExtKeyPaymentMethod])
+		assert.Equal(t, cbc.Code("PPD"), inv.Tax.Ext.Get(addon.ExtKeyPaymentMethod))
 
 		require.NotNil(t, inv.Payment)
 		require.NotNil(t, inv.Payment.Terms)
@@ -83,9 +83,9 @@ func TestParseComprobanteIngreso(t *testing.T) {
 		require.NoError(t, err)
 
 		assert.True(t, inv.HasTags(addon.TagGlobal), "global tag should be present")
-		assert.Equal(t, cbc.Code("04"), inv.Tax.Ext[addon.ExtKeyGlobalPeriod])
-		assert.Equal(t, cbc.Code("03"), inv.Tax.Ext[addon.ExtKeyGlobalMonth])
-		assert.Equal(t, cbc.Code("2025"), inv.Tax.Ext[addon.ExtKeyGlobalYear])
+		assert.Equal(t, cbc.Code("04"), inv.Tax.Ext.Get(addon.ExtKeyGlobalPeriod))
+		assert.Equal(t, cbc.Code("03"), inv.Tax.Ext.Get(addon.ExtKeyGlobalMonth))
+		assert.Equal(t, cbc.Code("2025"), inv.Tax.Ext.Get(addon.ExtKeyGlobalYear))
 	})
 
 	t.Run("should not parse payment details when MetodoPago is PPD", func(t *testing.T) {
@@ -107,6 +107,6 @@ func TestParseComprobanteEgreso(t *testing.T) {
 		assert.Equal(t, bill.InvoiceTypeCreditNote, inv.Type)
 		assert.Equal(t, cbc.Code("CN"), inv.Series)
 		assert.Equal(t, cbc.Code("0003"), inv.Code)
-		assert.Equal(t, cbc.Code("E"), inv.Tax.Ext[addon.ExtKeyDocType])
+		assert.Equal(t, cbc.Code("E"), inv.Tax.Ext.Get(addon.ExtKeyDocType))
 	})
 }

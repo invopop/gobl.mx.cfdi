@@ -1,7 +1,7 @@
 package cfdi
 
 import (
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
+	"github.com/invopop/gobl.cfdi/addon"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/l10n"
 	"github.com/invopop/gobl/org"
@@ -39,7 +39,7 @@ func newEmisor(supplier *org.Party) *Emisor {
 	emisor := &Emisor{
 		Rfc:           supplier.TaxID.Code.String(),
 		Nombre:        supplier.Name,
-		RegimenFiscal: supplier.Ext[addon.ExtKeyFiscalRegime].String(),
+		RegimenFiscal: supplier.Ext.Get(addon.ExtKeyFiscalRegime).String(),
 	}
 	return emisor
 }
@@ -89,8 +89,8 @@ func newReceptor(customer *org.Party, issuePlace string) *Receptor {
 	return &Receptor{
 		Nombre:                  customer.Name,
 		Rfc:                     customer.TaxID.Code.String(),
-		RegimenFiscalReceptor:   customer.Ext[addon.ExtKeyFiscalRegime].String(),
-		UsoCFDI:                 customer.Ext[addon.ExtKeyUse].String(),
+		RegimenFiscalReceptor:   customer.Ext.Get(addon.ExtKeyFiscalRegime).String(),
+		UsoCFDI:                 customer.Ext.Get(addon.ExtKeyUse).String(),
 		DomicilioFiscalReceptor: postcode,
 	}
 }

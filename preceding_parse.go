@@ -1,7 +1,7 @@
 package cfdi
 
 import (
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
+	"github.com/invopop/gobl.cfdi/addon"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/head"
@@ -19,9 +19,9 @@ func goblAddPreceding(doc *Document, out *bill.Invoice) {
 		out.Tax = new(bill.Tax)
 	}
 	if doc.CFDIRelacionados.TipoRelacion != "" {
-		out.Tax.Ext = out.Tax.Ext.Merge(tax.Extensions{
+		out.Tax.Ext = out.Tax.Ext.Merge(tax.ExtensionsOf(cbc.CodeMap{
 			addon.ExtKeyRelType: cbc.Code(doc.CFDIRelacionados.TipoRelacion),
-		})
+		}))
 	}
 
 	for _, rel := range doc.CFDIRelacionados.CfdiRelacionado {

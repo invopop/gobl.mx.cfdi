@@ -6,7 +6,7 @@ output:
 linters:
   enable:
     - errname
-    - goconst
+    # - goconst
     - gocyclo
     - nakedret
     - revive

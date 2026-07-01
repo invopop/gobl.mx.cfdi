@@ -3,8 +3,8 @@ package cfdi_test
 import (
 	"testing"
 
+	"github.com/invopop/gobl.cfdi/addon"
 	"github.com/invopop/gobl.cfdi/test"
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/l10n"
@@ -24,7 +24,7 @@ func TestParseEmisor(t *testing.T) {
 		require.NotNil(t, s.TaxID)
 		assert.Equal(t, l10n.MX.Tax(), s.TaxID.Country)
 		assert.Equal(t, cbc.Code("EKU9003173C9"), s.TaxID.Code)
-		assert.Equal(t, cbc.Code("601"), s.Ext[addon.ExtKeyFiscalRegime])
+		assert.Equal(t, cbc.Code("601"), s.Ext.Get(addon.ExtKeyFiscalRegime))
 	})
 }
 
@@ -40,8 +40,8 @@ func TestParseReceptor(t *testing.T) {
 		require.NotNil(t, c.TaxID)
 		assert.Equal(t, l10n.MX.Tax(), c.TaxID.Country)
 		assert.Equal(t, cbc.Code("URE180429TM6"), c.TaxID.Code)
-		assert.Equal(t, cbc.Code("601"), c.Ext[addon.ExtKeyFiscalRegime])
-		assert.Equal(t, cbc.Code("G01"), c.Ext[addon.ExtKeyUse])
+		assert.Equal(t, cbc.Code("601"), c.Ext.Get(addon.ExtKeyFiscalRegime))
+		assert.Equal(t, cbc.Code("G01"), c.Ext.Get(addon.ExtKeyUse))
 
 		require.Len(t, c.Addresses, 1)
 		assert.Equal(t, cbc.Code("65000"), c.Addresses[0].Code)

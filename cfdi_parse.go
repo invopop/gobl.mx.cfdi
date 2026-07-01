@@ -6,7 +6,7 @@ import (
 
 	"cloud.google.com/go/civil"
 	"github.com/invopop/gobl"
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
+	"github.com/invopop/gobl.cfdi/addon"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cal"
 	"github.com/invopop/gobl/cbc"
@@ -66,11 +66,11 @@ func goblInvoice(doc *Document) (*bill.Invoice, error) {
 		ExchangeRates: goblNewExchangeRates(doc),
 		Payment:       goblNewPaymentDetails(doc),
 		Tax: &bill.Tax{
-			Ext: tax.Extensions{
+			Ext: tax.ExtensionsOf(cbc.CodeMap{
 				addon.ExtKeyDocType:       cbc.Code(doc.TipoDeComprobante),
 				addon.ExtKeyIssuePlace:    cbc.Code(doc.LugarExpedicion),
 				addon.ExtKeyPaymentMethod: cbc.Code(doc.MetodoPago),
-			},
+			}),
 		},
 		Totals: goblNewBillTotals(doc),
 	}
@@ -86,11 +86,11 @@ func goblInvoice(doc *Document) (*bill.Invoice, error) {
 
 	if doc.Global != nil {
 		out.SetTags(addon.TagGlobal)
-		out.Tax.Ext = out.Tax.Ext.Merge(tax.Extensions{
+		out.Tax.Ext = out.Tax.Ext.Merge(tax.ExtensionsOf(cbc.CodeMap{
 			addon.ExtKeyGlobalPeriod: cbc.Code(doc.Global.Period),
 			addon.ExtKeyGlobalMonth:  cbc.Code(doc.Global.Month),
 			addon.ExtKeyGlobalYear:   cbc.Code(doc.Global.Year),
-		})
+		}))
 	}
 
 	if err := goblAddLines(doc, out); err != nil {
@@ -129,13 +129,13 @@ func goblNewPaymentDetails(doc *Document) *bill.PaymentDetails {
 	}
 
 	if cbc.Code(doc.MetodoPago) == addon.ExtCodePaymentMethodPUE {
-		payment.Advances = []*pay.Advance{{
+		payment.Advances = []*pay.Record{{
 			Description: "Pago en una sola exhibición",
 			Percent:     num.NewPercentage(100, 2),
 			Amount:      doc.Total,
-			Ext: tax.Extensions{
+			Ext: tax.ExtensionsOf(cbc.CodeMap{
 				addon.ExtKeyPaymentMeans: cbc.Code(doc.FormaPago),
-			},
+			}),
 		}}
 	}
 

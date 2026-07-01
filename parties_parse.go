@@ -3,7 +3,7 @@ package cfdi
 import (
 	"strings"
 
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
+	"github.com/invopop/gobl.cfdi/addon"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/l10n"
 	"github.com/invopop/gobl/org"
@@ -22,9 +22,9 @@ func goblNewSupplier(e *Emisor) *org.Party {
 			Country: l10n.MX.Tax(),
 			Code:    cbc.Code(e.Rfc),
 		},
-		Ext: tax.Extensions{
+		Ext: tax.ExtensionsOf(cbc.CodeMap{
 			addon.ExtKeyFiscalRegime: cbc.Code(e.RegimenFiscal),
-		},
+		}),
 	}
 }
 
@@ -43,10 +43,10 @@ func goblNewCustomer(r *Receptor) *org.Party {
 			Country: l10n.MX.Tax(),
 			Code:    cbc.Code(r.Rfc),
 		},
-		Ext: tax.Extensions{
+		Ext: tax.ExtensionsOf(cbc.CodeMap{
 			addon.ExtKeyFiscalRegime: cbc.Code(r.RegimenFiscalReceptor),
 			addon.ExtKeyUse:          cbc.Code(r.UsoCFDI),
-		},
+		}),
 	}
 	if r.DomicilioFiscalReceptor != "" {
 		out.Addresses = []*org.Address{
@@ -82,9 +82,9 @@ func goblNewThirdParty(tp *ThirdParty) *org.Party {
 		},
 	}
 	if tp.FiscalRegime != "" {
-		out.Ext = tax.Extensions{
+		out.Ext = tax.ExtensionsOf(cbc.CodeMap{
 			addon.ExtKeyFiscalRegime: tp.FiscalRegime,
-		}
+		})
 	}
 	if tp.PostCode != "" {
 		out.Addresses = []*org.Address{
