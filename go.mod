@@ -1,4 +1,4 @@
-module github.com/invopop/gobl.cfdi
+module github.com/invopop/gobl.mx.cfdi
 
 go 1.25.0
 

@@ -4,13 +4,13 @@ Mexican CFDI (Comprobante Fiscal Digital por Internet) support for [GOBL](https:
 
 Released publicly under the Apache 2.0 [LICENSE](LICENSE), Copyright [Invopop Ltd.](https://invopop.com) 2023. For commercial licenses please contact the [dev team at invopop](mailto:dev@invopop.com). In order to accept contributions to this library we will require transferring copyrights to Invopop Ltd.
 
-[![Lint](https://github.com/invopop/gobl.cfdi/actions/workflows/lint.yaml/badge.svg)](https://github.com/invopop/gobl.cfdi/actions/workflows/lint.yaml)
-[![Test Go](https://github.com/invopop/gobl.cfdi/actions/workflows/test.yaml/badge.svg)](https://github.com/invopop/gobl.cfdi/actions/workflows/test.yaml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/invopop/gobl.cfdi)](https://goreportcard.com/report/github.com/invopop/gobl.cfdi)
-[![codecov](https://codecov.io/gh/invopop/gobl.cfdi/graph/badge.svg)](https://codecov.io/gh/invopop/gobl.cfdi)
-[![GoDoc](https://godoc.org/github.com/invopop/gobl.cfdi?status.svg)](https://godoc.org/github.com/invopop/gobl.cfdi)
-![Latest Tag](https://img.shields.io/github/v/tag/invopop/gobl.cfdi)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/invopop/gobl.cfdi)
+[![Lint](https://github.com/invopop/gobl.mx.cfdi/actions/workflows/lint.yaml/badge.svg)](https://github.com/invopop/gobl.mx.cfdi/actions/workflows/lint.yaml)
+[![Test Go](https://github.com/invopop/gobl.mx.cfdi/actions/workflows/test.yaml/badge.svg)](https://github.com/invopop/gobl.mx.cfdi/actions/workflows/test.yaml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/invopop/gobl.mx.cfdi)](https://goreportcard.com/report/github.com/invopop/gobl.mx.cfdi)
+[![codecov](https://codecov.io/gh/invopop/gobl.mx.cfdi/graph/badge.svg)](https://codecov.io/gh/invopop/gobl.mx.cfdi)
+[![GoDoc](https://godoc.org/github.com/invopop/gobl.mx.cfdi?status.svg)](https://godoc.org/github.com/invopop/gobl.mx.cfdi)
+![Latest Tag](https://img.shields.io/github/v/tag/invopop/gobl.mx.cfdi)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/invopop/gobl.mx.cfdi)
 
 The [`addon/`](addon) package implements the extensions, normalizers, scenarios,
 and validation rules that GOBL documents need in order to comply with the
@@ -34,7 +34,7 @@ It also ships the CFDI **complements** as GOBL documents:
   registry.
 - the module root — the converter that turns a GOBL envelope into CFDI XML and
   parses CFDI XML back into GOBL, plus [addendas](addendas) and a
-  [command-line tool](cmd/gobl.cfdi).
+  [command-line tool](cmd/gobl.mx.cfdi).
 
 ## Usage
 
@@ -47,7 +47,7 @@ import so it registers itself, then use GOBL as normal:
 ```go
 import (
     "github.com/invopop/gobl"
-    _ "github.com/invopop/gobl.cfdi/addon"
+    _ "github.com/invopop/gobl.mx.cfdi/addon"
 )
 ```
 
@@ -74,7 +74,7 @@ import (
     "os"
 
     "github.com/invopop/gobl"
-    "github.com/invopop/gobl.cfdi"
+    "github.com/invopop/gobl.mx.cfdi"
 )
 
 func main {
@@ -117,16 +117,16 @@ For details on support for converting Addendas, please see the [addendas package
 
 ## Command Line
 
-The GOBL to CFDI tool also includes a command line helper. You can find pre-built [gobl.cfdi binaries](https://github.com/invopop/gobl.cfdi/releases) in the github repository, or install manually in your Go environment with:
+The GOBL to CFDI tool also includes a command line helper. You can find pre-built [gobl.mx.cfdi binaries](https://github.com/invopop/gobl.mx.cfdi/releases) in the github repository, or install manually in your Go environment with:
 
 ```bash
-go install ./cmd/gobl.cfdi
+go install ./cmd/gobl.mx.cfdi
 ```
 
 Usage is very straightforward:
 
 ```bash
-gobl.cfdi convert ./test/data/invoice-b2b-bare.json
+gobl.mx.cfdi convert ./test/data/invoice-b2b-bare.json
 ```
 
 Which should produce something like:

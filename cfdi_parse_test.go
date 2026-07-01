@@ -3,8 +3,8 @@ package cfdi_test
 import (
 	"testing"
 
-	"github.com/invopop/gobl.cfdi/addon"
-	"github.com/invopop/gobl.cfdi/test"
+	"github.com/invopop/gobl.mx.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/test"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/currency"

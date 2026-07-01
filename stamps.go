@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/invopop/gobl"
-	"github.com/invopop/gobl.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/addon"
 	"github.com/invopop/gobl/head"
 	"github.com/invopop/gobl/regimes/mx"
 )

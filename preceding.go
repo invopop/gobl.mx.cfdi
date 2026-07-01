@@ -1,7 +1,7 @@
 package cfdi
 
 import (
-	"github.com/invopop/gobl.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/addon"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/org"
 	"github.com/invopop/gobl/regimes/mx"

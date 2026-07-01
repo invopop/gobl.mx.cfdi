@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/invopop/gobl.cfdi/internal"
-	"github.com/invopop/gobl.cfdi/internal/format"
+	"github.com/invopop/gobl.mx.cfdi/internal"
+	"github.com/invopop/gobl.mx.cfdi/internal/format"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/i18n"

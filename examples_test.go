@@ -10,8 +10,8 @@ import (
 	"testing"
 
 	"github.com/invopop/gobl"
-	cfdi "github.com/invopop/gobl.cfdi"
-	"github.com/invopop/gobl.cfdi/test"
+	cfdi "github.com/invopop/gobl.mx.cfdi"
+	"github.com/invopop/gobl.mx.cfdi/test"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/dsig"
 	"github.com/invopop/gobl/uuid"

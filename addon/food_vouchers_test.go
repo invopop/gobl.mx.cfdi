@@ -3,7 +3,7 @@ package addon_test
 import (
 	"testing"
 
-	"github.com/invopop/gobl.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/addon"
 	"github.com/invopop/gobl/num"
 	"github.com/invopop/gobl/rules"
 	"github.com/stretchr/testify/assert"

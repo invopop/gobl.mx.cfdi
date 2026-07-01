@@ -3,7 +3,7 @@ package cfdi
 import (
 	"strings"
 
-	"github.com/invopop/gobl.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/addon"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/l10n"
 	"github.com/invopop/gobl/org"

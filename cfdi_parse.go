@@ -6,7 +6,7 @@ import (
 
 	"cloud.google.com/go/civil"
 	"github.com/invopop/gobl"
-	"github.com/invopop/gobl.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/addon"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cal"
 	"github.com/invopop/gobl/cbc"

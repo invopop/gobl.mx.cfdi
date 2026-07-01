@@ -3,8 +3,8 @@ package addendas_test
 import (
 	"testing"
 
-	"github.com/invopop/gobl.cfdi/addendas"
-	"github.com/invopop/gobl.cfdi/test"
+	"github.com/invopop/gobl.mx.cfdi/addendas"
+	"github.com/invopop/gobl.mx.cfdi/test"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/org"
 	"github.com/stretchr/testify/assert"

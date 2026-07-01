@@ -5,7 +5,7 @@ import (
 	"math"
 	"testing"
 
-	"github.com/invopop/gobl.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/addon"
 	"github.com/invopop/gobl/num"
 	"github.com/invopop/gobl/regimes/mx"
 	"github.com/invopop/gobl/rules"

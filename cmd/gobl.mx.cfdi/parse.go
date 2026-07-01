@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	cfdi "github.com/invopop/gobl.cfdi"
+	cfdi "github.com/invopop/gobl.mx.cfdi"
 	"github.com/spf13/cobra"
 )
 
@@ -31,7 +31,7 @@ func (p *parseOpts) runE(cmd *cobra.Command, args []string) error {
 	// ctx := commandContext(cmd)
 
 	if len(args) == 0 || len(args) > 2 {
-		return fmt.Errorf("expected one or two arguments, the command usage is `gobl.cfdi parse <infile> [outfile]`")
+		return fmt.Errorf("expected one or two arguments, the command usage is `gobl.mx.cfdi parse <infile> [outfile]`")
 	}
 
 	input, err := openInput(cmd, args)

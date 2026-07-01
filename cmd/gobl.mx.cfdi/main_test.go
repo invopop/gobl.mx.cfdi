@@ -21,7 +21,7 @@ func Test_root(t *testing.T) {
 		{
 			name: "unsupported command",
 			args: []string{"foo"},
-			err:  `unknown command "foo" for "gobl.cfdi"`,
+			err:  `unknown command "foo" for "gobl.mx.cfdi"`,
 		},
 	}
 

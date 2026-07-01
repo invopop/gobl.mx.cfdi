@@ -2,22 +2,22 @@ before:
   hooks:
     - go mod download
 builds:
-  - id: gobl.cfdi
+  - id: gobl.mx.cfdi
     env:
       - CGO_ENABLED=0
     goos:
       - linux
       - windows
       - darwin
-    main: ./cmd/gobl.cfdi
-    binary: gobl.cfdi
+    main: ./cmd/gobl.mx.cfdi
+    binary: gobl.mx.cfdi
 
 archives:
-  - id: gobl.cfdi
+  - id: gobl.mx.cfdi
     builds:
-      - gobl.cfdi
+      - gobl.mx.cfdi
     format: tar.gz
-    name_template: "gobl.cfdi_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    name_template: "gobl.mx.cfdi_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     wrap_in_directory: true
 
 checksum:
@@ -33,5 +33,5 @@ changelog:
 release:
   github:
     owner: invopop
-    name: gobl.cfdi
+    name: gobl.mx.cfdi
   prerelease: auto

@@ -3,8 +3,8 @@ package cfdi
 import (
 	"encoding/xml"
 
-	"github.com/invopop/gobl.cfdi/addon"
-	"github.com/invopop/gobl.cfdi/internal/format"
+	"github.com/invopop/gobl.mx.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/internal/format"
 )
 
 // VD Schema constants

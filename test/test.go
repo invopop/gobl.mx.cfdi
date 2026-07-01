@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/invopop/gobl"
-	cfdi "github.com/invopop/gobl.cfdi"
+	cfdi "github.com/invopop/gobl.mx.cfdi"
 	"github.com/invopop/gobl/bill"
 )
 
