@@ -18,7 +18,7 @@ const (
 
 // Complement's Codes Patterns
 const (
-	CURPPattern           = "^[A-Z][A,E,I,O,U,X][A-Z]{2}[0-9]{2}[0-1][0-9][0-3][0-9][M,H][A-Z]{2}[B,C,D,F,G,H,J,K,L,M,N,Ñ,P,Q,R,S,T,V,W,X,Y,Z]{3}[0-9,A-Z][0-9]$"
+	CURPPattern           = "^[A-Z][AEIOUX][A-Z]{2}[0-9]{2}[0-1][0-9][0-3][0-9][MH][A-Z]{2}[BCDFGHJKLMNÑPQRSTVWXYZ]{3}[0-9A-Z][0-9]$"
 	SocialSecurityPattern = "^[0-9]{11}$"
 	PostCodePattern       = "^[0-9]{5}$"
 )
