@@ -26,6 +26,9 @@ func normalizeInvoice(inv *bill.Invoice) {
 }
 
 func normalizeInvoiceIssueDateAndTime(inv *bill.Invoice) {
+	if inv == nil {
+		return
+	}
 	// Overwrite the issue date and time to align with
 	// CFDI requirements for the emission date, unless the
 	// issue time is already set.
