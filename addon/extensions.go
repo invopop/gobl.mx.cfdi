@@ -374,7 +374,7 @@ var extensions = []*cbc.Definition{
 			{
 				Code: "I05",
 				Name: i18n.String{
-					i18n.EN: "Dies, punches, molds, matrices and other toolin",
+					i18n.EN: "Dies, punches, molds, matrices and other tooling",
 					i18n.ES: "Dados, troqueles, moldes, matrices y herramental",
 				},
 			},
