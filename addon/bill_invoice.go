@@ -16,6 +16,9 @@ import (
 )
 
 func normalizeInvoice(inv *bill.Invoice) {
+	if inv == nil {
+		return
+	}
 	normalizeInvoiceIssueDateAndTime(inv)
 	if inv.HasTags(TagGlobal) {
 		inv.Customer = nil
