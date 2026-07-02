@@ -77,7 +77,7 @@ import (
     "github.com/invopop/gobl.mx.cfdi"
 )
 
-func main {
+func main() {
     data, _ := os.ReadFile("./test/data/invoice.json")
 
     env := new(gobl.Envelope)
