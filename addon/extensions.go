@@ -353,7 +353,7 @@ var extensions = []*cbc.Definition{
 			{
 				Code: "I02",
 				Name: i18n.String{
-					i18n.EN: "Office furniture and equipment as investmen",
+					i18n.EN: "Office furniture and equipment as investment",
 					i18n.ES: "Mobiliario y equipo de oficina por inversiones",
 				},
 			},
