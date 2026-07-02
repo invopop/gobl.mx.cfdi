@@ -1,7 +1,6 @@
 package addon_test
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/invopop/gobl.mx.cfdi/addon"
