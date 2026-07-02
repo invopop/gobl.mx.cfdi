@@ -701,7 +701,7 @@ var extensions = []*cbc.Definition{
 			i18n.ES: "CFDI Global Periodicidad",
 		},
 		Desc: i18n.String{
-			i18n.EN: "Period for when the sales where generated.",
+			i18n.EN: "Period for when the sales were generated.",
 			i18n.ES: "Campo requerido para registrar el período al que corresponde la información del comprobante global.",
 		},
 		Values: []*cbc.Definition{
