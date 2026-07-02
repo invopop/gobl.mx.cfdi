@@ -32,8 +32,6 @@ func TestInvoiceScenarios(t *testing.T) {
 			},
 		}
 		require.NoError(t, inv.Calculate())
-		data, _ := json.MarshalIndent(inv, "", "  ")
-		t.Logf("DOC: %s", string(data))
 		assert.NoError(t, rules.Validate(inv))
 		assert.Equal(t, "PUE", inv.Tax.Ext.Get(addon.ExtKeyPaymentMethod).String())
 	})
