@@ -1,7 +1,7 @@
 package cfdi
 
 import (
-	"github.com/invopop/gobl.cfdi/internal"
+	"github.com/invopop/gobl.mx.cfdi/internal"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/num"
 )

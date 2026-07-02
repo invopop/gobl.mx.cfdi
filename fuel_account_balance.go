@@ -3,8 +3,8 @@ package cfdi
 import (
 	"encoding/xml"
 
-	"github.com/invopop/gobl.cfdi/internal/format"
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
+	"github.com/invopop/gobl.mx.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/internal/format"
 	"github.com/invopop/gobl/regimes/mx"
 	"github.com/invopop/gobl/tax"
 )

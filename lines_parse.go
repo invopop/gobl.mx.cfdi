@@ -1,8 +1,8 @@
 package cfdi
 
 import (
-	"github.com/invopop/gobl.cfdi/internal"
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
+	"github.com/invopop/gobl.mx.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/internal"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/num"
@@ -63,11 +63,11 @@ func goblNewLine(c *Concepto, index int) (*bill.Line, error) {
 
 func goblItemExt(c *Concepto) tax.Extensions {
 	if c == nil || c.ClaveProdServ == "" || c.ClaveProdServ == internal.DefaultClaveProdServ {
-		return nil
+		return tax.Extensions{}
 	}
-	return tax.Extensions{
+	return tax.ExtensionsOf(cbc.CodeMap{
 		addon.ExtKeyProdServ: cbc.Code(c.ClaveProdServ),
-	}
+	})
 }
 
 func goblItemUnit(cu string) org.Unit {

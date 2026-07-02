@@ -3,7 +3,7 @@ package cfdi_test
 import (
 	"testing"
 
-	"github.com/invopop/gobl.cfdi/test"
+	"github.com/invopop/gobl.mx.cfdi/test"
 	"github.com/invopop/gobl/tax"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

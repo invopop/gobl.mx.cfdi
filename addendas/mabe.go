@@ -3,9 +3,10 @@ package addendas
 import (
 	"encoding/xml"
 	"fmt"
+	"strings"
 
-	"github.com/invopop/gobl.cfdi/internal"
-	"github.com/invopop/gobl.cfdi/internal/format"
+	"github.com/invopop/gobl.mx.cfdi/internal"
+	"github.com/invopop/gobl.mx.cfdi/internal/format"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/i18n"
@@ -225,7 +226,7 @@ func validateSupplierForMabe(value any) error {
 	}
 	return validation.ValidateStruct(sup,
 		validation.Field(&sup.Identities,
-			org.RequireIdentityKey(MabeKeyIdentityProviderCode),
+			requireIdentityKey(MabeKeyIdentityProviderCode),
 			validation.Skip,
 		),
 	)
@@ -251,7 +252,7 @@ func validateItemForMabe(value any) error {
 	}
 	return validation.ValidateStruct(item,
 		validation.Field(&item.Identities,
-			org.RequireIdentityKey(MabeKeyIdentityArticleCode),
+			requireIdentityKey(MabeKeyIdentityArticleCode),
 			validation.Skip,
 		),
 	)
@@ -278,7 +279,7 @@ func validateReceiverForMabe(value any) error {
 	}
 	return validation.ValidateStruct(rec,
 		validation.Field(&rec.Identities,
-			org.RequireIdentityKey(MabeKeyIdentityDeliveryPlant),
+			requireIdentityKey(MabeKeyIdentityDeliveryPlant),
 			validation.Skip,
 		),
 	)
@@ -291,8 +292,8 @@ func validateOrderingForMabe(value any) error {
 	}
 	return validation.ValidateStruct(ord,
 		validation.Field(&ord.Identities,
-			org.RequireIdentityKey(MabeKeyIdentityPurchaseOrder),
-			org.RequireIdentityKey(MabeKeyIdentityRef1),
+			requireIdentityKey(MabeKeyIdentityPurchaseOrder),
+			requireIdentityKey(MabeKeyIdentityRef1),
 			validation.Skip,
 		),
 	)
@@ -421,6 +422,23 @@ func setMabeTaxes(inv *bill.Invoice, mabe *MabeFactura) {
 
 func formatMabeFolio(inv *bill.Invoice) string {
 	return fmt.Sprintf("%s%s", inv.Series, inv.Code)
+}
+
+// requireIdentityKey replaces the org.RequireIdentityKey helper that GOBL core
+// dropped during its migration to the rules package. It validates that the
+// identity set contains at least one identity matching any of the given keys.
+func requireIdentityKey(key ...cbc.Key) validation.Rule {
+	return validation.By(func(value any) error {
+		ids, ok := value.([]*org.Identity)
+		if !ok || org.IdentityForKey(ids, key...) != nil {
+			return nil
+		}
+		strs := make([]string, len(key))
+		for i, k := range key {
+			strs[i] = k.String()
+		}
+		return fmt.Errorf("missing key '%s'", strings.Join(strs, "', '"))
+	})
 }
 
 func extractIdentity(ids []*org.Identity, key cbc.Key) cbc.Code {

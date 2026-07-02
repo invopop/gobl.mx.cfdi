@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	cfdi "github.com/invopop/gobl.cfdi"
-	"github.com/invopop/gobl.cfdi/test"
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
+	cfdi "github.com/invopop/gobl.mx.cfdi"
+	"github.com/invopop/gobl.mx.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/test"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/regimes/mx"
 	"github.com/stretchr/testify/assert"

@@ -7,10 +7,10 @@ import (
 	"fmt"
 
 	"github.com/invopop/gobl"
-	"github.com/invopop/gobl.cfdi/addendas"
-	"github.com/invopop/gobl.cfdi/internal"
-	"github.com/invopop/gobl.cfdi/internal/format"
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
+	"github.com/invopop/gobl.mx.cfdi/addendas"
+	"github.com/invopop/gobl.mx.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/internal"
+	"github.com/invopop/gobl.mx.cfdi/internal/format"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/cal"
 	"github.com/invopop/gobl/currency"
@@ -214,9 +214,9 @@ func newGlobalInformation(inv *bill.Invoice) *GlobalInformation {
 		return nil
 	}
 	return &GlobalInformation{
-		Period: inv.Tax.Ext[addon.ExtKeyGlobalPeriod].String(),
-		Month:  inv.Tax.Ext[addon.ExtKeyGlobalMonth].String(),
-		Year:   inv.Tax.Ext[addon.ExtKeyGlobalYear].String(),
+		Period: inv.Tax.Ext.Get(addon.ExtKeyGlobalPeriod).String(),
+		Month:  inv.Tax.Ext.Get(addon.ExtKeyGlobalMonth).String(),
+		Year:   inv.Tax.Ext.Get(addon.ExtKeyGlobalYear).String(),
 	}
 }
 
@@ -244,10 +244,10 @@ func validateSupport(inv *bill.Invoice) error {
 
 func issuePlace(inv *bill.Invoice) string {
 	if inv.Tax != nil && inv.Tax.Ext.Has(addon.ExtKeyIssuePlace) {
-		return inv.Tax.Ext[addon.ExtKeyIssuePlace].String()
+		return inv.Tax.Ext.Get(addon.ExtKeyIssuePlace).String()
 	}
 	// Fallback
-	return inv.Supplier.Ext[addon.ExtKeyIssuePlace].String()
+	return inv.Supplier.Ext.Get(addon.ExtKeyIssuePlace).String()
 }
 
 // Bytes returns the XML representation of the document in bytes
@@ -306,7 +306,7 @@ func lookupTipoDeComprobante(inv *bill.Invoice) string {
 		return ""
 	}
 
-	return inv.Tax.Ext[addon.ExtKeyDocType].String()
+	return inv.Tax.Ext.Get(addon.ExtKeyDocType).String()
 }
 
 func tipoCambio(inv *bill.Invoice) *num.Amount {
@@ -320,7 +320,7 @@ func tipoCambio(inv *bill.Invoice) *num.Amount {
 
 func metodoPago(inv *bill.Invoice) string {
 	if inv.Tax != nil && inv.Tax.Ext.Has(addon.ExtKeyPaymentMethod) {
-		return inv.Tax.Ext[addon.ExtKeyPaymentMethod].String()
+		return inv.Tax.Ext.Get(addon.ExtKeyPaymentMethod).String()
 	}
 	// Fallback to the payment method based on the detected payment advances
 	if isPrepaid(inv) {
@@ -334,14 +334,14 @@ func formaPago(inv *bill.Invoice) string {
 	if !isPrepaid(inv) || adv == nil {
 		return FormaPagoPorDefinir
 	}
-	return adv.Ext[addon.ExtKeyPaymentMeans].String()
+	return adv.Ext.Get(addon.ExtKeyPaymentMeans).String()
 }
 
 func isPrepaid(inv *bill.Invoice) bool {
 	return inv.Totals.Due != nil && inv.Totals.Due.IsZero()
 }
 
-func largestAdvance(inv *bill.Invoice) *pay.Advance {
+func largestAdvance(inv *bill.Invoice) *pay.Record {
 	if inv.Payment == nil || len(inv.Payment.Advances) == 0 {
 		return nil
 	}

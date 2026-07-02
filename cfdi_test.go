@@ -3,8 +3,8 @@ package cfdi_test
 import (
 	"testing"
 
-	"github.com/invopop/gobl.cfdi/test"
-	addon "github.com/invopop/gobl/addons/mx/cfdi"
+	"github.com/invopop/gobl.mx.cfdi/addon"
+	"github.com/invopop/gobl.mx.cfdi/test"
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/num"
 	"github.com/invopop/gobl/pay"
@@ -51,7 +51,7 @@ func TestComprobanteIngreso(t *testing.T) {
 		assert.Equal(t, "99", doc.FormaPago)
 
 		// Partial settlement
-		inv.Payment.Advances = append(inv.Payment.Advances, &pay.Advance{
+		inv.Payment.Advances = append(inv.Payment.Advances, &pay.Record{
 			Percent:     num.NewPercentage(40, 2),
 			Description: "First partial settlement",
 			Key:         pay.MeansKeyCash,
@@ -61,7 +61,7 @@ func TestComprobanteIngreso(t *testing.T) {
 		assert.Equal(t, "99", doc.FormaPago)
 
 		// Full settlement
-		inv.Payment.Advances = append(inv.Payment.Advances, &pay.Advance{
+		inv.Payment.Advances = append(inv.Payment.Advances, &pay.Record{
 			Percent:     num.NewPercentage(60, 2),
 			Description: "Second partial settlement",
 			Key:         pay.MeansKeyOnline.With(addon.MeansKeyWallet),
@@ -73,7 +73,7 @@ func TestComprobanteIngreso(t *testing.T) {
 		// Total amount is zero
 		inv.Lines = inv.Lines[:1]
 		inv.Lines[0].Discounts = []*bill.LineDiscount{{Percent: num.NewPercentage(100, 2)}}
-		inv.Payment.Advances = []*pay.Advance{{
+		inv.Payment.Advances = []*pay.Record{{
 			Description: "No payment needed",
 			Key:         pay.MeansKeyCash,
 		}}

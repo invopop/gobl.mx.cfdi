@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	name       = "gobl.cfdi"
+	name       = "gobl.mx.cfdi"
 	mainBranch = "main"
 )
 
