@@ -97,7 +97,7 @@ type FuelAccountTax struct {
 
 // Calculate performs the complement's calculations and normalisations.
 func (fab *FuelAccountBalance) Calculate() error {
-	// Subtotal an tax total need to be calculated using the expected
+	// Subtotal and tax total need to be calculated using the expected
 	// precision for SAT as the PACs recalculate them as part of the
 	// validation process. Inevitably this means precision loss.
 	taxtotal := num.MakeAmount(0, FuelAccountTotalsPrecision)
