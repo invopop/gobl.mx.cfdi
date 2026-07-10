@@ -39,7 +39,7 @@ require (
 	github.com/invopop/validation v0.8.0
 	github.com/lestrrat-go/libxml2 v0.0.0-20201123224832-e6d9de61b80d
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/crypto v0.47.0 // indirect
+	golang.org/x/crypto v0.52.0 // indirect
 )
 
 // replace github.com/invopop/gobl => ../gobl
