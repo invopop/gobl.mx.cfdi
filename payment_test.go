@@ -67,7 +67,6 @@ func TestComprobantePago(t *testing.T) {
 		assert.Equal(t, "CP01", doc.Receptor.UsoCFDI)
 	})
 
-
 	t.Run("should return a Document with the fixed Concepto", func(t *testing.T) {
 		doc, err := test.GenerateCFDIFrom(validPayment())
 		require.NoError(t, err)
