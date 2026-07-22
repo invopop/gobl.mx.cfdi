@@ -24,6 +24,7 @@ const (
 	PagoObjetoImp     = ObjetoImpNo // ObjetoImp (not subject to tax)
 )
 
+// Fixed values for CFDI type "P" documents as per SAT fill-in guide
 var (
 	PagoCantidadCero = num.AmountZero // SubTotal, Total, ValorUnitario and Importe (zero amount)
 )
