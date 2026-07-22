@@ -128,7 +128,7 @@ func goblNewPaymentDetails(doc *Document) *bill.PaymentDetails {
 		}
 	}
 
-	if cbc.Code(doc.MetodoPago) == addon.ExtCodePaymentMethodPUE {
+	if cbc.Code(doc.MetodoPago) == addon.PaymentMethodPUE {
 		payment.Advances = []*pay.Record{{
 			Description: "Pago en una sola exhibición",
 			Percent:     num.NewPercentage(100, 2),
@@ -182,7 +182,7 @@ func goblNewBillTotals(doc *Document) *bill.Totals {
 	}
 
 	// Set due to zero if payment method is PUE consistently with the advance
-	if cbc.Code(doc.MetodoPago) == addon.ExtCodePaymentMethodPUE {
+	if cbc.Code(doc.MetodoPago) == addon.PaymentMethodPUE {
 		bt.Due = &zero
 	}
 

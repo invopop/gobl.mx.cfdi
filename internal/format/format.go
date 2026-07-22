@@ -4,6 +4,7 @@ package format //nolint:revive
 import (
 	"fmt"
 
+	"github.com/invopop/gobl/cal"
 	"github.com/invopop/gobl/num"
 )
 
@@ -14,6 +15,15 @@ func OptionalAmount(a num.Amount) string {
 	}
 
 	return a.String()
+}
+
+// DateTime combines a date and an optional time into the date-time string
+// required by CFDI.
+func DateTime(date cal.Date, time *cal.Time) string {
+	if time == nil {
+		time = new(cal.Time) // zero
+	}
+	return date.WithTime(*time).String()
 }
 
 // SchemaLocation provides a string with the namespace and schema location.

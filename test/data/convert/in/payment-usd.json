@@ -1,0 +1,106 @@
+{
+	"$schema": "https://gobl.org/draft-0/envelope",
+	"head": {
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"dig": {
+			"alg": "sha256",
+			"val": "b331855eebdd927582035969770996213e1bb2445beaebc2e506fae0543a03f2"
+		}
+	},
+	"doc": {
+		"$schema": "https://gobl.org/draft-0/bill/payment",
+		"$regime": "MX",
+		"$addons": [
+			"mx-cfdi-v4"
+		],
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"type": "receipt",
+		"series": "P",
+		"code": "0030",
+		"issue_date": "2023-06-05",
+		"issue_time": "12:00:00",
+		"currency": "USD",
+		"exchange_rates": [
+			{
+				"from": "USD",
+				"to": "MXN",
+				"amount": "17.46"
+			}
+		],
+		"ext": {
+			"mx-cfdi-doc-type": "P",
+			"mx-cfdi-issue-place": "26015"
+		},
+		"supplier": {
+			"name": "ESCUELA KEMPER URGATE",
+			"tax_id": {
+				"country": "MX",
+				"code": "EKU9003173C9"
+			},
+			"ext": {
+				"mx-cfdi-fiscal-regime": "601"
+			}
+		},
+		"customer": {
+			"name": "UNIVERSIDAD ROBOTICA ESPAÑOLA",
+			"tax_id": {
+				"country": "MX",
+				"code": "URE180429TM6"
+			},
+			"addresses": [
+				{
+					"code": "65000"
+				}
+			],
+			"ext": {
+				"mx-cfdi-fiscal-regime": "601"
+			}
+		},
+		"lines": [
+			{
+				"i": 1,
+				"document": {
+					"issue_date": "2023-05-29",
+					"series": "LMC",
+					"code": "0010",
+					"stamps": [
+						{
+							"prv": "sat-uuid",
+							"val": "77c3b9d0-4c5a-4e2b-9d4e-3a1f2b6c8d90"
+						}
+					]
+				},
+				"installment": 1,
+				"payable": "232.00",
+				"amount": "232.00",
+				"due": "0.00",
+				"tax": {
+					"categories": [
+						{
+							"code": "VAT",
+							"rates": [
+								{
+									"base": "200.00",
+									"percent": "16.0%",
+									"amount": "32.00"
+								}
+							],
+							"amount": "32.00"
+						}
+					],
+					"sum": "32.00"
+				}
+			}
+		],
+		"methods": [
+			{
+				"key": "card",
+				"amount": "232.00",
+				"ext": {
+					"mx-cfdi-payment-means": "04"
+				}
+			}
+		],
+		"total": "232.00"
+	}
+}

@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/invopop/gobl/bill"
-	"github.com/invopop/gobl/cal"
 	"github.com/invopop/gobl/currency"
 	"github.com/invopop/gobl/head"
 	"github.com/invopop/gobl/num"
@@ -29,17 +28,12 @@ func normalizeInvoiceIssueDateAndTime(inv *bill.Invoice) {
 	if inv == nil {
 		return
 	}
-	// Overwrite the issue date and time to align with
-	// CFDI requirements for the emission date, unless the
-	// issue time is already set.
+	// Overwrite the issue date and time to align with CFDI requirements for the
+	// emission date, unless the issue time is already set.
 	if inv.IssueTime != nil && !inv.IssueTime.IsZero() {
 		return
 	}
-	tz := inv.RegimeDef().TimeLocation()
-	dn := cal.ThisSecondIn(tz)
-	tn := dn.Time()
-	inv.IssueDate = dn.Date()
-	inv.IssueTime = &tn
+	inv.IssueDate, inv.IssueTime = currentIssueDateTime()
 }
 
 func billInvoiceRules() *rules.Set {
