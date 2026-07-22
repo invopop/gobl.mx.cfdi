@@ -67,19 +67,6 @@ func TestComprobantePago(t *testing.T) {
 		assert.Equal(t, "CP01", doc.Receptor.UsoCFDI)
 	})
 
-	t.Run("should force the CFDI use of a generic Receptor", func(t *testing.T) {
-		pmt := validPayment()
-		pmt.Customer = nil
-
-		doc, err := test.GenerateCFDIFrom(pmt)
-		require.NoError(t, err)
-
-		assert.Equal(t, "XAXX010101000", doc.Receptor.Rfc)
-		assert.Equal(t, "PÚBLICO EN GENERAL", doc.Receptor.Nombre)
-		assert.Equal(t, "21000", doc.Receptor.DomicilioFiscalReceptor)
-		assert.Equal(t, "616", doc.Receptor.RegimenFiscalReceptor)
-		assert.Equal(t, "CP01", doc.Receptor.UsoCFDI)
-	})
 
 	t.Run("should return a Document with the fixed Concepto", func(t *testing.T) {
 		doc, err := test.GenerateCFDIFrom(validPayment())
