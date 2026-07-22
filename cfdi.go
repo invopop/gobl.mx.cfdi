@@ -110,7 +110,7 @@ func Convert(env *gobl.Envelope) (*Document, error) {
 	case *bill.Payment:
 		return convertPayment(doc), nil
 	default:
-		return nil, fmt.Errorf("invalid type %T", env.Document)
+		return nil, fmt.Errorf("invalid type %T", doc)
 	}
 }
 
