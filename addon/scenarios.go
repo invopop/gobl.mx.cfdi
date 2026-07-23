@@ -37,7 +37,7 @@ var invoiceScenarios = &tax.ScenarioSet{
 				return inv.Totals.Paid()
 			},
 			Ext: tax.ExtensionsOf(cbc.CodeMap{
-				ExtKeyPaymentMethod: ExtCodePaymentMethodPUE, // Pago en una sola exhibición
+				ExtKeyPaymentMethod: PaymentMethodPUE, // Pago en una sola exhibición
 			}),
 		},
 		{
@@ -50,7 +50,7 @@ var invoiceScenarios = &tax.ScenarioSet{
 				return !inv.Totals.Paid()
 			},
 			Ext: tax.ExtensionsOf(cbc.CodeMap{
-				ExtKeyPaymentMethod: ExtCodePaymentMethodPPD, // Pago en parcialidades o diferido
+				ExtKeyPaymentMethod: PaymentMethodPPD, // Pago en parcialidades o diferido
 			}),
 		},
 	},

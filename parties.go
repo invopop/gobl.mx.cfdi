@@ -63,7 +63,7 @@ func newReceptor(customer *org.Party, issuePlace string) *Receptor {
 			Nombre:                  NombreReceptorGenerico,
 			Rfc:                     mx.TaxIdentityCodeGeneric.String(),
 			RegimenFiscalReceptor:   RegimenFiscalSinObligaciones,
-			UsoCFDI:                 UsoCFDISinEfectos,
+			UsoCFDI:                 addon.UseWithoutTaxEffects.String(),
 			DomicilioFiscalReceptor: issuePlace,
 		}
 	}
@@ -74,7 +74,7 @@ func newReceptor(customer *org.Party, issuePlace string) *Receptor {
 			Nombre:                  customer.Name,
 			Rfc:                     mx.TaxIdentityCodeForeign.String(),
 			RegimenFiscalReceptor:   RegimenFiscalSinObligaciones,
-			UsoCFDI:                 UsoCFDISinEfectos,
+			UsoCFDI:                 addon.UseWithoutTaxEffects.String(),
 			DomicilioFiscalReceptor: issuePlace,
 			NumRegIdTrib:            customer.TaxID.Code.String(),
 			ResidenciaFiscal:        cd.Alpha3,

@@ -4,5 +4,6 @@
 	<xs:import namespace="http://www.sat.gob.mx/cfd/4" schemaLocation="./cfdv40.xsd" />
 	<xs:import namespace="http://www.sat.gob.mx/EstadoDeCuentaCombustible12" schemaLocation="./ecc12.xsd" />
 	<xs:import namespace="http://www.sat.gob.mx/valesdedespensa" schemaLocation="./valesdedespensa.xsd" />
+	<xs:import namespace="http://www.sat.gob.mx/Pagos20" schemaLocation="./pagos20.xsd" />
 	<xs:import namespace="https://recepcionfe.mabempresa.com/cfd/addenda/v1" schemaLocation="./mabev1.xsd" />
 </xs:schema>

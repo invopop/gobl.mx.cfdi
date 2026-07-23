@@ -65,7 +65,7 @@ need the blank import.
 
 ### Converter
 
-Usage of the CFDI conversion library is quite straight forward. You must first have a GOBL Envelope including an invoice for Mexico ready to convert. There are some samples here in the test/data directory.
+Usage of the CFDI conversion library is quite straightforward. You must first have a GOBL Envelope including an invoice or a payment for Mexico ready to convert. There are some samples here in the test/data directory.
 
 ```go
 package main
@@ -86,7 +86,7 @@ func main() {
     }
 
     // Prepare the CFDI document
-    doc, err := cfdi.NewDocument(env)
+    doc, err := cfdi.Convert(env)
     if err != nil {
         panic(err)
     }

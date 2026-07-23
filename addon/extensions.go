@@ -23,12 +23,75 @@ const (
 	ExtKeyGlobalYear    cbc.Key = "mx-cfdi-global-year"
 )
 
-// Payment Method Extension codes
+// CFDI Extension Codes
 const (
-	// Paid in advance (Pago en una sola exhibición)
-	ExtCodePaymentMethodPUE cbc.Code = "PUE"
-	// Payment is due (Pago en parcialidades o diferido)
-	ExtCodePaymentMethodPPD cbc.Code = "PPD"
+	// Payment Method Extension codes
+	PaymentMethodPUE cbc.Code = "PUE"
+	PaymentMethodPPD cbc.Code = "PPD"
+
+	// Payment Means Extension codes
+	PaymentMeansCash                 cbc.Code = "01"
+	PaymentMeansCheck                cbc.Code = "02"
+	PaymentMeansTransfer             cbc.Code = "03"
+	PaymentMeansCreditCard           cbc.Code = "04"
+	PaymentMeansWallet               cbc.Code = "05"
+	PaymentMeansElectronicMoney      cbc.Code = "06"
+	PaymentMeansGroceryVoucher       cbc.Code = "08"
+	PaymentMeansInKind               cbc.Code = "12"
+	PaymentMeansSubrogation          cbc.Code = "13"
+	PaymentMeansConsignment          cbc.Code = "14"
+	PaymentMeansDebtRelief           cbc.Code = "15"
+	PaymentMeansNetting              cbc.Code = "17"
+	PaymentMeansNovation             cbc.Code = "23"
+	PaymentMeansMerger               cbc.Code = "24"
+	PaymentMeansRemission            cbc.Code = "25"
+	PaymentMeansExpiration           cbc.Code = "26"
+	PaymentMeansCreditorSatisfaction cbc.Code = "27"
+	PaymentMeansDebitCard            cbc.Code = "28"
+	PaymentMeansServicesCard         cbc.Code = "29"
+	PaymentMeansAdvance              cbc.Code = "30"
+	PaymentMeansIntermediary         cbc.Code = "31"
+	PaymentMeansToDefine             cbc.Code = "99"
+
+	// CFDI Use Extension codes
+	UseAcquisitionOfGoods      cbc.Code = "G01"
+	UseReturnsDiscountsRebates cbc.Code = "G02"
+	UseGeneralExpenses         cbc.Code = "G03"
+	UseConstruction            cbc.Code = "I01"
+	UseOfficeFurniture         cbc.Code = "I02"
+	UseTransportEquipment      cbc.Code = "I03"
+	UseComputerEquipment       cbc.Code = "I04"
+	UseTooling                 cbc.Code = "I05"
+	UseTelephoneComms          cbc.Code = "I06"
+	UseSatelliteComms          cbc.Code = "I07"
+	UseOtherMachinery          cbc.Code = "I08"
+	UseMedicalExpenses         cbc.Code = "D01"
+	UseDisabilityExpenses      cbc.Code = "D02"
+	UseFuneralExpenses         cbc.Code = "D03"
+	UseDonations               cbc.Code = "D04"
+	UseMortgageInterest        cbc.Code = "D05"
+	UseSARContributions        cbc.Code = "D06"
+	UseMedicalInsurance        cbc.Code = "D07"
+	UseSchoolTransportation    cbc.Code = "D08"
+	UseSavingsDeposits         cbc.Code = "D09"
+	UseEducationalServices     cbc.Code = "D10"
+	UseWithoutTaxEffects       cbc.Code = "S01"
+	UsePayments                cbc.Code = "CP01"
+	UsePayroll                 cbc.Code = "CN01"
+
+	// Document Type Extension codes
+	DocTypeInvoice    cbc.Code = "I"
+	DocTypeCreditNote cbc.Code = "E"
+	DocTypePayment    cbc.Code = "P"
+
+	// Relation Type Extension codes
+	RelTypeCreditNote    cbc.Code = "01"
+	RelTypeDebitNote     cbc.Code = "02"
+	RelTypeReturn        cbc.Code = "03"
+	RelTypeSubstitution  cbc.Code = "04"
+	RelTypeTransfer      cbc.Code = "05"
+	RelTypeFromTransfers cbc.Code = "06"
+	RelTypeAdvance       cbc.Code = "07"
 )
 
 var extensions = []*cbc.Definition{
@@ -40,17 +103,24 @@ var extensions = []*cbc.Definition{
 		},
 		Values: []*cbc.Definition{
 			{
-				Code: "I",
+				Code: DocTypeInvoice,
 				Name: i18n.String{
 					i18n.EN: "Invoice",
 					i18n.ES: "Comprobante de Ingreso",
 				},
 			},
 			{
-				Code: "E",
+				Code: DocTypeCreditNote,
 				Name: i18n.String{
 					i18n.EN: "Credit Note",
 					i18n.ES: "Comprobante de Egreso",
+				},
+			},
+			{
+				Code: DocTypePayment,
+				Name: i18n.String{
+					i18n.EN: "Payment",
+					i18n.ES: "Comprobante de Pago",
 				},
 			},
 		},
@@ -63,49 +133,49 @@ var extensions = []*cbc.Definition{
 		},
 		Values: []*cbc.Definition{
 			{
-				Code: "01",
+				Code: RelTypeCreditNote,
 				Name: i18n.String{
 					i18n.EN: "Credit note for related documents",
 					i18n.ES: "Nota de crédito de los documentos relacionados",
 				},
 			},
 			{
-				Code: "02",
+				Code: RelTypeDebitNote,
 				Name: i18n.String{
 					i18n.EN: "Debit note for related documents",
 					i18n.ES: "Nota de débito de los documentos relacionados",
 				},
 			},
 			{
-				Code: "03",
+				Code: RelTypeReturn,
 				Name: i18n.String{
 					i18n.EN: "Return of goods for related documents",
 					i18n.ES: "Devolución de mercancía sobre los documentos relacionados",
 				},
 			},
 			{
-				Code: "04",
+				Code: RelTypeSubstitution,
 				Name: i18n.String{
 					i18n.EN: "Substitution of the previous CFDI document",
 					i18n.ES: "Sustitución de los CFDI previos",
 				},
 			},
 			{
-				Code: "05",
+				Code: RelTypeTransfer,
 				Name: i18n.String{
 					i18n.EN: "Transfer of goods for related documents",
 					i18n.ES: "Traslados de mercancías facturados por los documentos relacionados",
 				},
 			},
 			{
-				Code: "06",
+				Code: RelTypeFromTransfers,
 				Name: i18n.String{
 					i18n.EN: "Invoice generated by previous transfers",
 					i18n.ES: "Factura generada por los traslados previos",
 				},
 			},
 			{
-				Code: "07",
+				Code: RelTypeAdvance,
 				Name: i18n.String{
 					i18n.ES: "CFDI por aplicación de anticipo",
 					i18n.EN: "CFDI for advance payment",
@@ -323,168 +393,168 @@ var extensions = []*cbc.Definition{
 		},
 		Values: []*cbc.Definition{
 			{
-				Code: "G01",
+				Code: UseAcquisitionOfGoods,
 				Name: i18n.String{
 					i18n.EN: "Acquisition of goods",
 					i18n.ES: "Adquisición de mercancías",
 				},
 			},
 			{
-				Code: "G02",
+				Code: UseReturnsDiscountsRebates,
 				Name: i18n.String{
 					i18n.EN: "Returns, discounts or rebates",
 					i18n.ES: "Devoluciones, descuentos o bonificaciones",
 				},
 			},
 			{
-				Code: "G03",
+				Code: UseGeneralExpenses,
 				Name: i18n.String{
 					i18n.EN: "General expenses",
 					i18n.ES: "Gastos en general",
 				},
 			},
 			{
-				Code: "I01",
+				Code: UseConstruction,
 				Name: i18n.String{
 					i18n.EN: "Construction",
 					i18n.ES: "Construcciones",
 				},
 			},
 			{
-				Code: "I02",
+				Code: UseOfficeFurniture,
 				Name: i18n.String{
 					i18n.EN: "Office furniture and equipment as investment",
 					i18n.ES: "Mobiliario y equipo de oficina por inversiones",
 				},
 			},
 			{
-				Code: "I03",
+				Code: UseTransportEquipment,
 				Name: i18n.String{
 					i18n.EN: "Transport equipment",
 					i18n.ES: "Equipo de transporte",
 				},
 			},
 			{
-				Code: "I04",
+				Code: UseComputerEquipment,
 				Name: i18n.String{
 					i18n.EN: "Computer equipment and accessories",
 					i18n.ES: "Equipo de computo y accesorios",
 				},
 			},
 			{
-				Code: "I05",
+				Code: UseTooling,
 				Name: i18n.String{
 					i18n.EN: "Dies, punches, molds, matrices and other tooling",
 					i18n.ES: "Dados, troqueles, moldes, matrices y herramental",
 				},
 			},
 			{
-				Code: "I06",
+				Code: UseTelephoneComms,
 				Name: i18n.String{
 					i18n.EN: "Telephone communications",
 					i18n.ES: "Comunicaciones telefónicas",
 				},
 			},
 			{
-				Code: "I07",
+				Code: UseSatelliteComms,
 				Name: i18n.String{
 					i18n.EN: "Satellite communications",
 					i18n.ES: "Comunicaciones satelitales",
 				},
 			},
 			{
-				Code: "I08",
+				Code: UseOtherMachinery,
 				Name: i18n.String{
 					i18n.EN: "Other machinery and equipment",
 					i18n.ES: "Otra maquinaria y equipo",
 				},
 			},
 			{
-				Code: "D01",
+				Code: UseMedicalExpenses,
 				Name: i18n.String{
 					i18n.EN: "Medical and dental fees and hospital expenses",
 					i18n.ES: "Honorarios médicos, dentales y gastos hospitalarios",
 				},
 			},
 			{
-				Code: "D02",
+				Code: UseDisabilityExpenses,
 				Name: i18n.String{
 					i18n.EN: "Medical expenses for disability or incapacity",
 					i18n.ES: "Gastos médicos por incapacidad o discapacidad",
 				},
 			},
 			{
-				Code: "D03",
+				Code: UseFuneralExpenses,
 				Name: i18n.String{
 					i18n.EN: "Funeral expenses",
 					i18n.ES: "Gastos funerales",
 				},
 			},
 			{
-				Code: "D04",
+				Code: UseDonations,
 				Name: i18n.String{
 					i18n.EN: "Donations",
 					i18n.ES: "Donativos",
 				},
 			},
 			{
-				Code: "D05",
+				Code: UseMortgageInterest,
 				Name: i18n.String{
 					i18n.EN: "Interest actually paid on mortgage loans (housing)",
 					i18n.ES: "Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación)",
 				},
 			},
 			{
-				Code: "D06",
+				Code: UseSARContributions,
 				Name: i18n.String{
 					i18n.EN: "Voluntary contributions to the SAR",
 					i18n.ES: "Aportaciones voluntarias al SAR",
 				},
 			},
 			{
-				Code: "D07",
+				Code: UseMedicalInsurance,
 				Name: i18n.String{
 					i18n.EN: "Medical insurance premiums",
 					i18n.ES: "Primas por seguros de gastos médicos",
 				},
 			},
 			{
-				Code: "D08",
+				Code: UseSchoolTransportation,
 				Name: i18n.String{
 					i18n.EN: "Mandatory school transportation expenses",
 					i18n.ES: "Gastos de transportación escolar obligatoria",
 				},
 			},
 			{
-				Code: "D09",
+				Code: UseSavingsDeposits,
 				Name: i18n.String{
 					i18n.EN: "Deposits in savings accounts, pension plans premiums",
 					i18n.ES: "Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones",
 				},
 			},
 			{
-				Code: "D10",
+				Code: UseEducationalServices,
 				Name: i18n.String{
 					i18n.EN: "Payments for educational services (school fees)",
 					i18n.ES: "Pagos por servicios educativos (colegiaturas)",
 				},
 			},
 			{
-				Code: "S01",
+				Code: UseWithoutTaxEffects,
 				Name: i18n.String{
 					i18n.EN: "Without tax effects",
 					i18n.ES: "Sin efectos fiscales",
 				},
 			},
 			{
-				Code: "CP01",
+				Code: UsePayments,
 				Name: i18n.String{
 					i18n.EN: "Payments",
 					i18n.ES: "Pagos",
 				},
 			},
 			{
-				Code: "CN01",
+				Code: UsePayroll,
 				Name: i18n.String{
 					i18n.EN: "Payroll",
 					i18n.ES: "Nómina",
@@ -508,14 +578,14 @@ var extensions = []*cbc.Definition{
 		},
 		Values: []*cbc.Definition{
 			{
-				Code: ExtCodePaymentMethodPUE,
+				Code: PaymentMethodPUE,
 				Name: i18n.String{
 					i18n.EN: "Payment in a single exhibition",
 					i18n.ES: "Pago en una sola exhibición",
 				},
 			},
 			{
-				Code: ExtCodePaymentMethodPPD,
+				Code: PaymentMethodPPD,
 				Name: i18n.String{
 					i18n.EN: "Payment in deferred installments",
 					i18n.ES: "Pago en parcialidades o diferido",
@@ -539,154 +609,154 @@ var extensions = []*cbc.Definition{
 		},
 		Values: []*cbc.Definition{
 			{
-				Code: "01",
+				Code: PaymentMeansCash,
 				Name: i18n.String{
 					i18n.EN: "Cash",
 					i18n.ES: "Efectivo",
 				},
 			},
 			{
-				Code: "02",
+				Code: PaymentMeansCheck,
 				Name: i18n.String{
 					i18n.EN: "Check",
 					i18n.ES: "Cheque nominativo",
 				},
 			},
 			{
-				Code: "03",
+				Code: PaymentMeansTransfer,
 				Name: i18n.String{
 					i18n.EN: "Electronic Funds Transfer",
 					i18n.ES: "Transferencia electrónica de fondos",
 				},
 			},
 			{
-				Code: "04",
+				Code: PaymentMeansCreditCard,
 				Name: i18n.String{
 					i18n.EN: "Credit Card",
 					i18n.ES: "Tarjeta de crédito",
 				},
 			},
 			{
-				Code: "05",
+				Code: PaymentMeansWallet,
 				Name: i18n.String{
 					i18n.EN: "Electronic Wallet",
 					i18n.ES: "Monedero electrónico",
 				},
 			},
 			{
-				Code: "06",
+				Code: PaymentMeansElectronicMoney,
 				Name: i18n.String{
 					i18n.EN: "Online or Electronic Payment",
 					i18n.ES: "Dinero electrónico",
 				},
 			},
 			{
-				Code: "08",
+				Code: PaymentMeansGroceryVoucher,
 				Name: i18n.String{
 					i18n.EN: "Grocery Voucher",
 					i18n.ES: "Vales de despensa",
 				},
 			},
 			{
-				Code: "12",
+				Code: PaymentMeansInKind,
 				Name: i18n.String{
 					i18n.EN: "Payment in Kind",
 					i18n.ES: "Dación en pago",
 				},
 			},
 			{
-				Code: "13",
+				Code: PaymentMeansSubrogation,
 				Name: i18n.String{
 					i18n.EN: "Payment by subrogation",
 					i18n.ES: "Pago por subrogación",
 				},
 			},
 			{
-				Code: "14",
+				Code: PaymentMeansConsignment,
 				Name: i18n.String{
 					i18n.EN: "Payment by consignment",
 					i18n.ES: "Pago por consignación",
 				},
 			},
 			{
-				Code: "15",
+				Code: PaymentMeansDebtRelief,
 				Name: i18n.String{
 					i18n.EN: "Debt relief",
 					i18n.ES: "Condonación",
 				},
 			},
 			{
-				Code: "17",
+				Code: PaymentMeansNetting,
 				Name: i18n.String{
 					i18n.EN: "Netting",
 					i18n.ES: "Compensación",
 				},
 			},
 			{
-				Code: "23",
+				Code: PaymentMeansNovation,
 				Name: i18n.String{
 					i18n.EN: "Novation",
 					i18n.ES: "Novación",
 				},
 			},
 			{
-				Code: "24",
+				Code: PaymentMeansMerger,
 				Name: i18n.String{
 					i18n.EN: "Merger",
 					i18n.ES: "Confusión",
 				},
 			},
 			{
-				Code: "25",
+				Code: PaymentMeansRemission,
 				Name: i18n.String{
 					i18n.EN: "Debt remission",
 					i18n.ES: "Remisión de deuda",
 				},
 			},
 			{
-				Code: "26",
+				Code: PaymentMeansExpiration,
 				Name: i18n.String{
 					i18n.EN: "Expiration of payment obligation",
 					i18n.ES: "Prescripción o caducidad",
 				},
 			},
 			{
-				Code: "27",
+				Code: PaymentMeansCreditorSatisfaction,
 				Name: i18n.String{
 					i18n.EN: "To the creditor's satisfaction",
 					i18n.ES: "A satisfacción del acreedor",
 				},
 			},
 			{
-				Code: "28",
+				Code: PaymentMeansDebitCard,
 				Name: i18n.String{
 					i18n.EN: "Debit card",
 					i18n.ES: "Tarjeta de débito",
 				},
 			},
 			{
-				Code: "29",
+				Code: PaymentMeansServicesCard,
 				Name: i18n.String{
 					i18n.EN: "Services card",
 					i18n.ES: "Tarjeta de servicios",
 				},
 			},
 			{
-				Code: "30",
+				Code: PaymentMeansAdvance,
 				Name: i18n.String{
 					i18n.EN: "Advance payment",
 					i18n.ES: "Aplicación de anticipos",
 				},
 			},
 			{
-				Code: "31",
+				Code: PaymentMeansIntermediary,
 				Name: i18n.String{
 					i18n.EN: "Payment via intermediary",
 					i18n.ES: "Intermediario pagos",
 				},
 			},
 			{
-				Code: "99",
+				Code: PaymentMeansToDefine,
 				Name: i18n.String{
 					i18n.EN: "Undefined",
 					i18n.ES: "Por definir",

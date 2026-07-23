@@ -74,13 +74,14 @@ func LoadTestEnvelope(name string) (*gobl.Envelope, error) {
 	return env, nil
 }
 
-// GenerateCFDIFrom returns a CFDI Document from a GOBL Invoice
-func GenerateCFDIFrom(inv *bill.Invoice) (*cfdi.Document, error) {
-	if err := inv.Calculate(); err != nil {
+// GenerateCFDIFrom returns a CFDI Document from a GOBL document (e.g. a
+// bill.Invoice or a bill.Payment)
+func GenerateCFDIFrom(doc interface{ Calculate() error }) (*cfdi.Document, error) {
+	if err := doc.Calculate(); err != nil {
 		return nil, err
 	}
 
-	env, err := gobl.Envelop(inv)
+	env, err := gobl.Envelop(doc)
 	if err != nil {
 		return nil, err
 	}

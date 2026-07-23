@@ -5,8 +5,10 @@ package addon
 
 import (
 	"github.com/invopop/gobl/bill"
+	"github.com/invopop/gobl/cal"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/i18n"
+	"github.com/invopop/gobl/l10n"
 	"github.com/invopop/gobl/norm"
 	"github.com/invopop/gobl/rules"
 	"github.com/invopop/gobl/rules/is"
@@ -36,6 +38,9 @@ const (
 	TagGlobal cbc.Key = "global"
 )
 
+// Mexican regime for use in the addon.
+var reg = tax.RegimeDefFor(l10n.MX)
+
 func init() {
 	tax.RegisterAddonDef(newAddon())
 
@@ -50,6 +55,7 @@ func init() {
 		rules.GOBL.Add("MX-CFDI"),
 		is.InContext(tax.AddonIn(V4)),
 		billInvoiceRules(),
+		billPaymentRules(),
 		payInstructionsRules(),
 		payAdvanceRules(),
 		payTermsRules(),
@@ -59,6 +65,7 @@ func init() {
 	norm.RegisterWithGuard(
 		is.InContext(tax.AddonIn(V4)),
 		norm.For(normalizeInvoice),
+		norm.For(normalizePayment),
 		norm.For(normalizeParty),
 		norm.For(normalizeItem),
 		norm.For(normalizePayInstructions),
@@ -92,4 +99,10 @@ func newAddon() *tax.AddonDef {
 		},
 		Scenarios: scenarios,
 	}
+}
+
+func currentIssueDateTime() (cal.Date, *cal.Time) {
+	dn := cal.ThisSecondIn(reg.TimeLocation())
+	t := dn.Time()
+	return dn.Date(), &t
 }

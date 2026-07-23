@@ -1,0 +1,118 @@
+{
+	"$schema": "https://gobl.org/draft-0/envelope",
+	"head": {
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"dig": {
+			"alg": "sha256",
+			"val": "0bbc0daa5abb56049ab406ef1eab1fee5806447545cd834469e2ccd0f91c7cad"
+		}
+	},
+	"doc": {
+		"$schema": "https://gobl.org/draft-0/bill/payment",
+		"$regime": "MX",
+		"$addons": [
+			"mx-cfdi-v4"
+		],
+		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
+		"type": "receipt",
+		"series": "P",
+		"code": "0020",
+		"issue_date": "2023-07-01",
+		"issue_time": "12:00:00",
+		"value_date": "2023-06-28",
+		"currency": "MXN",
+		"ext": {
+			"mx-cfdi-doc-type": "P",
+			"mx-cfdi-issue-place": "26015"
+		},
+		"supplier": {
+			"name": "ESCUELA KEMPER URGATE",
+			"tax_id": {
+				"country": "MX",
+				"code": "EKU9003173C9"
+			},
+			"ext": {
+				"mx-cfdi-fiscal-regime": "601"
+			}
+		},
+		"customer": {
+			"name": "UNIVERSIDAD ROBOTICA ESPAÑOLA",
+			"tax_id": {
+				"country": "MX",
+				"code": "URE180429TM6"
+			},
+			"addresses": [
+				{
+					"code": "65000"
+				}
+			],
+			"ext": {
+				"mx-cfdi-fiscal-regime": "601"
+			}
+		},
+		"lines": [
+			{
+				"i": 1,
+				"document": {
+					"issue_date": "2023-05-29",
+					"series": "LMC",
+					"code": "0011",
+					"stamps": [
+						{
+							"prv": "sat-uuid",
+							"val": "1c1cdc42-9e2b-4a4d-8f3e-25f0c2a4bb61"
+						}
+					],
+					"tax": {
+						"categories": [
+							{
+								"code": "VAT",
+								"rates": [
+									{
+										"base": "20000.00",
+										"percent": "16.0%",
+										"amount": "3200.00"
+									}
+								],
+								"amount": "3200.00"
+							}
+						],
+						"sum": "3200.00"
+					}
+				},
+				"installment": 2,
+				"payable": "23200.00",
+				"advances": "5800.00",
+				"amount": "5800.00",
+				"due": "11600.00",
+				"tax": {
+					"categories": [
+						{
+							"code": "VAT",
+							"rates": [
+								{
+									"base": "5000.00",
+									"percent": "16.0%",
+									"amount": "800.00"
+								}
+							],
+							"amount": "800.00"
+						}
+					],
+					"sum": "800.00"
+				}
+			}
+		],
+		"methods": [
+			{
+				"key": "cheque",
+				"ref": "0012345",
+				"amount": "5800.00",
+				"ext": {
+					"mx-cfdi-payment-means": "02"
+				}
+			}
+		],
+		"total": "5800.00"
+	}
+}
