@@ -55,18 +55,9 @@ func normalizeItem(item *org.Item) {
 	}
 }
 
-// normalizeItemUnit keeps the item's unit and its UN/ECE code in step. The
-// code is what the CFDI carries as the line's "ClaveUnidad", and SAT's
-// c_ClaveUnidad catalogue is built on the same UN/ECE recommendations as the
-// UNTDID extension, so a code with no GOBL key of its own is preserved there.
+// normalizeItemUnit resolves the item's unit against the UNTDID extension,
+// which is where a "ClaveUnidad" with no GOBL unit of its own is kept: SAT's
+// c_ClaveUnidad catalogue is built on the same UN/ECE recommendations.
 func normalizeItemUnit(item *org.Item) {
-	code := item.Ext.Get(untdid.ExtKeyUnit)
-	if unit := untdid.UnitKey(code); unit != cbc.KeyEmpty {
-		item.Unit = unit
-	}
-	if code == cbc.CodeEmpty {
-		if code = untdid.UnitCode(item.Unit); code != cbc.CodeEmpty {
-			item.Ext = item.Ext.Set(untdid.ExtKeyUnit, code)
-		}
-	}
+	item.Unit, item.Ext = untdid.NormalizeUnit(item.Unit, item.Ext)
 }

@@ -24,7 +24,9 @@ func TestClaveUnidad(t *testing.T) {
 			code: "LTR",
 		},
 		{
-			name: "from the extension",
+			// Normalization keeps one or the other, but a document that
+			// arrives with both is answered by the code it states.
+			name: "extension over the unit",
 			item: &org.Item{
 				Unit: org.UnitLitre,
 				Ext:  tax.ExtensionsOf(cbc.CodeMap{untdid.ExtKeyUnit: "A59"}),

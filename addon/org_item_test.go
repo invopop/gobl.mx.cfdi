@@ -98,13 +98,13 @@ func TestItemNilIdentityHandling(t *testing.T) {
 }
 
 func TestItemUnitNormalization(t *testing.T) {
-	t.Run("adds the UN/ECE code for the unit", func(t *testing.T) {
+	t.Run("keeps the unit on its own", func(t *testing.T) {
 		inv := validInvoice()
 		inv.Lines[0].Item.Unit = org.UnitLitre
 
 		require.NoError(t, inv.Calculate())
 		assert.Equal(t, org.UnitLitre, inv.Lines[0].Item.Unit)
-		assert.Equal(t, cbc.Code("LTR"), inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit))
+		assert.Empty(t, inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit))
 	})
 
 	t.Run("takes the unit from the code", func(t *testing.T) {
@@ -114,6 +114,7 @@ func TestItemUnitNormalization(t *testing.T) {
 
 		require.NoError(t, inv.Calculate())
 		assert.Equal(t, org.UnitLitre, inv.Lines[0].Item.Unit)
+		assert.Empty(t, inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit), "the unit says it already")
 	})
 
 	t.Run("keeps a code with no GOBL unit", func(t *testing.T) {
@@ -132,7 +133,7 @@ func TestItemUnitNormalization(t *testing.T) {
 
 		require.NoError(t, inv.Calculate())
 		assert.Equal(t, org.UnitPiece, inv.Lines[0].Item.Unit)
-		assert.Equal(t, cbc.Code("H87"), inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit))
+		assert.Empty(t, inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit), "the unit says it already")
 	})
 
 	t.Run("leaves an item without a unit alone", func(t *testing.T) {

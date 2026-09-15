@@ -43,15 +43,17 @@ func goblNewLine(c *Concepto, index int) (*bill.Line, error) {
 		total = total.Subtract(*c.Descuento)
 	}
 
+	unit, ext := untdid.NormalizeUnit(cbc.KeyEmpty, goblItemExt(c))
+
 	return &bill.Line{
 		Index:    index,
 		Quantity: qty,
 		Item: &org.Item{
 			Name:  c.Desc,
 			Price: &c.ValorUnitario,
-			Unit:  goblItemUnit(c.ClaveUnidad),
+			Unit:  unit,
 			Ref:   cbc.Code(c.Ref),
-			Ext:   goblItemExt(c),
+			Ext:   ext,
 		},
 		Sum:       &c.Importe,
 		Total:     &total,
@@ -70,19 +72,12 @@ func goblItemExt(c *Concepto) tax.Extensions {
 	if c.ClaveProdServ != "" && c.ClaveProdServ != internal.DefaultClaveProdServ {
 		ext = ext.Set(addon.ExtKeyProdServ, cbc.Code(c.ClaveProdServ))
 	}
-	// Keep the unit code as given, including the many SAT codes with no GOBL
-	// unit, but not the mutually defined default, which says nothing.
+	// Keep the unit code as given so that normalization can resolve it,
+	// but not the mutually defined default, which says nothing.
 	if c.ClaveUnidad != "" && c.ClaveUnidad != internal.DefaultClaveUnidad {
 		ext = ext.Set(untdid.ExtKeyUnit, cbc.Code(c.ClaveUnidad))
 	}
 	return ext
-}
-
-// goblItemUnit maps a "ClaveUnidad" onto the GOBL unit it corresponds to,
-// which is empty for the many SAT codes GOBL has no unit for. The code itself
-// is kept in the item's extensions either way, so it survives a round trip.
-func goblItemUnit(cu string) cbc.Key {
-	return untdid.UnitKey(cbc.Code(cu))
 }
 
 func goblLineDiscounts(d *num.Amount) []*bill.LineDiscount {

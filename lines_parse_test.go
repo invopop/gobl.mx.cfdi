@@ -27,7 +27,7 @@ func TestParseConceptos(t *testing.T) {
 		assert.Equal(t, "Cigarros", l.Item.Name)
 		assert.Equal(t, "200.2020", l.Item.Price.String())
 		assert.Equal(t, org.UnitPiece, l.Item.Unit)
-		assert.Equal(t, cbc.Code("H87"), l.Item.Ext.Get(untdid.ExtKeyUnit))
+		assert.Empty(t, l.Item.Ext.Get(untdid.ExtKeyUnit), "the unit says it already")
 		assert.Equal(t, cbc.Code("50211502"), l.Item.Ext.Get(addon.ExtKeyProdServ))
 		assert.Equal(t, "400.4040", l.Sum.String())
 

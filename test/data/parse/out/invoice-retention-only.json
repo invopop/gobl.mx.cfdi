@@ -4,7 +4,7 @@
 		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
 		"dig": {
 			"alg": "sha256",
-			"val": "3c4323b34471707cf281781dc6e8bc5ecb6d5847118a8a90cea1a5b1346c772e"
+			"val": "42cd24abcd1a89cfa64221acddb9ec6464410a6b2e5303d7f8a006897e28db6f"
 		}
 	},
 	"doc": {
@@ -65,8 +65,7 @@
 					"price": "200.00",
 					"unit": "service",
 					"ext": {
-						"mx-cfdi-prod-serv": "84111506",
-						"untdid-unit": "E48"
+						"mx-cfdi-prod-serv": "84111506"
 					}
 				},
 				"sum": "200.00",
