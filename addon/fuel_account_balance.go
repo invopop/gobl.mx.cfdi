@@ -2,6 +2,7 @@ package addon
 
 import (
 	"github.com/invopop/gobl/cal"
+	"github.com/invopop/gobl/catalogues/untdid"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/num"
 	"github.com/invopop/gobl/org"
@@ -74,8 +75,9 @@ type FuelAccountLine struct {
 type FuelAccountItem struct {
 	// Type of fuel (one of `c_ClaveTipoCombustible` codes, maps to `TipoCombustible`).
 	Type cbc.Code `json:"type" jsonschema:"title=Type"`
-	// Reference unit of measure used in the price and the quantity (maps to `Unidad`).
-	Unit org.Unit `json:"unit,omitempty" jsonschema:"title=Unit"`
+	// Reference unit of measure used in the price and the quantity, converted
+	// to its UN/ECE code for `Unidad`.
+	Unit cbc.Key `json:"unit,omitempty" jsonschema:"title=Unit"`
 	// Name of the fuel (maps to `NombreCombustible`).
 	Name string `json:"name" jsonschema:"title=Name"`
 	// Base price of a single unit of the fuel without taxes (maps to `ValorUnitario`).
@@ -110,6 +112,7 @@ func (fab *FuelAccountBalance) Calculate() error {
 		if l.Item != nil {
 			l.Item.Price = l.Item.Price.RescaleUp(FuelAccountPriceMinimumPrecision)
 			l.Total = l.Item.Price.Multiply(l.Quantity)
+			l.Item.normalizeUnit()
 		}
 
 		for _, t := range l.Taxes {
@@ -178,6 +181,9 @@ func fuelAccountBalanceRules() *rules.Set {
 					rules.Field("price",
 						rules.Assert("17", "line item price must be greater than 0", num.Positive),
 					),
+					rules.Field("unit",
+						rules.AssertIfPresent("27", "line item unit must be valid", org.HasValidUnitKey),
+					),
 				),
 				rules.Field("purchase_code",
 					rules.Assert("18", "line purchase code is required", is.Present),
@@ -211,6 +217,15 @@ func fuelAccountBalanceRules() *rules.Set {
 			),
 		),
 	)
+}
+
+// normalizeUnit migrates a raw UN/ECE code to the GOBL unit key it stands for.
+// The field held a free-form unit before unit keys were enforced, so a few
+// documents carry the code that used to be copied straight into `Unidad`.
+func (fi *FuelAccountItem) normalizeUnit() {
+	if unit := untdid.UnitKey(cbc.Code(fi.Unit)); unit != cbc.KeyEmpty {
+		fi.Unit = unit
+	}
 }
 
 // fuelAccountLineTotalValid checks that the line total equals quantity * item price.

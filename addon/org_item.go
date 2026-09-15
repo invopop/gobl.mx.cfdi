@@ -3,6 +3,7 @@ package addon
 import (
 	"regexp"
 
+	"github.com/invopop/gobl/catalogues/untdid"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/org"
 	"github.com/invopop/gobl/tax"
@@ -26,6 +27,7 @@ func normalizeItem(item *org.Item) {
 	if item == nil {
 		return
 	}
+	normalizeItemUnit(item)
 	// 2023-08-25: Migrate identities to extensions
 	// Pending removal after migrations completed.
 	idents := make([]*org.Identity, 0)
@@ -49,6 +51,22 @@ func normalizeItem(item *org.Item) {
 			if itemExtensionNormalizableCodeRegexp.MatchString(v.String()) {
 				item.Ext = item.Ext.Set(k, cbc.Code(v.String()+"00"))
 			}
+		}
+	}
+}
+
+// normalizeItemUnit keeps the item's unit and its UN/ECE code in step. The
+// code is what the CFDI carries as the line's "ClaveUnidad", and SAT's
+// c_ClaveUnidad catalogue is built on the same UN/ECE recommendations as the
+// UNTDID extension, so a code with no GOBL key of its own is preserved there.
+func normalizeItemUnit(item *org.Item) {
+	code := item.Ext.Get(untdid.ExtKeyUnit)
+	if unit := untdid.UnitKey(code); unit != cbc.KeyEmpty {
+		item.Unit = unit
+	}
+	if code == cbc.CodeEmpty {
+		if code = untdid.UnitCode(item.Unit); code != cbc.CodeEmpty {
+			item.Ext = item.Ext.Set(untdid.ExtKeyUnit, code)
 		}
 	}
 }

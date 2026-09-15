@@ -4,7 +4,7 @@
 		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
 		"dig": {
 			"alg": "sha256",
-			"val": "b331855eebdd927582035969770996213e1bb2445beaebc2e506fae0543a03f2"
+			"val": "58986ba1b99e05f50b41ee9235cfdb8b5eed8e1267509d4b6006296cb6f2b425"
 		}
 	},
 	"doc": {
@@ -53,7 +53,8 @@
 				}
 			],
 			"ext": {
-				"mx-cfdi-fiscal-regime": "601"
+				"mx-cfdi-fiscal-regime": "601",
+				"mx-cfdi-use": "CP01"
 			}
 		},
 		"lines": [

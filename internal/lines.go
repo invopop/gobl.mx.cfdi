@@ -3,6 +3,7 @@ package internal
 import (
 	"github.com/invopop/gobl.mx.cfdi/addon"
 	"github.com/invopop/gobl/bill"
+	"github.com/invopop/gobl/catalogues/untdid"
 	"github.com/invopop/gobl/cbc"
 )
 
@@ -12,13 +13,18 @@ const (
 	DefaultClaveProdServ = "01010101"
 )
 
-// ClaveUnidad determines the line item's "ClaveUnidad" value.
+// ClaveUnidad determines the line item's "ClaveUnidad" value from the item's
+// unit, falling back to the mutually defined code when there is nothing to
+// map. Normalization keeps the UN/ECE code in the extension, including codes
+// that have no GOBL unit key of their own.
 func ClaveUnidad(line *bill.Line) cbc.Code {
-	if line.Item.Unit == "" {
-		return DefaultClaveUnidad
+	if code := line.Item.Ext.Get(untdid.ExtKeyUnit); code != cbc.CodeEmpty {
+		return code
 	}
-
-	return line.Item.Unit.UNECE()
+	if code := untdid.UnitCode(line.Item.Unit); code != cbc.CodeEmpty {
+		return code
+	}
+	return DefaultClaveUnidad
 }
 
 // ClaveProdServ determines the line's Product-Service code

@@ -4,6 +4,7 @@ import (
 	"github.com/invopop/gobl.mx.cfdi/addon"
 	"github.com/invopop/gobl.mx.cfdi/internal"
 	"github.com/invopop/gobl/bill"
+	"github.com/invopop/gobl/catalogues/untdid"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/num"
 	"github.com/invopop/gobl/org"
@@ -62,22 +63,26 @@ func goblNewLine(c *Concepto, index int) (*bill.Line, error) {
 }
 
 func goblItemExt(c *Concepto) tax.Extensions {
-	if c == nil || c.ClaveProdServ == "" || c.ClaveProdServ == internal.DefaultClaveProdServ {
-		return tax.Extensions{}
+	ext := tax.Extensions{}
+	if c == nil {
+		return ext
 	}
-	return tax.ExtensionsOf(cbc.CodeMap{
-		addon.ExtKeyProdServ: cbc.Code(c.ClaveProdServ),
-	})
+	if c.ClaveProdServ != "" && c.ClaveProdServ != internal.DefaultClaveProdServ {
+		ext = ext.Set(addon.ExtKeyProdServ, cbc.Code(c.ClaveProdServ))
+	}
+	// Keep the unit code as given, including the many SAT codes with no GOBL
+	// unit, but not the mutually defined default, which says nothing.
+	if c.ClaveUnidad != "" && c.ClaveUnidad != internal.DefaultClaveUnidad {
+		ext = ext.Set(untdid.ExtKeyUnit, cbc.Code(c.ClaveUnidad))
+	}
+	return ext
 }
 
-func goblItemUnit(cu string) org.Unit {
-	for _, def := range org.UnitDefinitions {
-		if def.UNECE == cbc.Code(cu) {
-			return def.Unit
-		}
-	}
-	// No unit found, use empty unit
-	return org.UnitEmpty
+// goblItemUnit maps a "ClaveUnidad" onto the GOBL unit it corresponds to,
+// which is empty for the many SAT codes GOBL has no unit for. The code itself
+// is kept in the item's extensions either way, so it survives a round trip.
+func goblItemUnit(cu string) cbc.Key {
+	return untdid.UnitKey(cbc.Code(cu))
 }
 
 func goblLineDiscounts(d *num.Amount) []*bill.LineDiscount {

@@ -4,7 +4,7 @@
 		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
 		"dig": {
 			"alg": "sha256",
-			"val": "d1e690b566961607152248631cb1f1f88c018745b74bac1fa043d68c7c70525d"
+			"val": "8385e89d64cfa7f01342e7fd0d1d13d82375c9c2fb4a263b0d79845401894d26"
 		}
 	},
 	"doc": {
@@ -63,7 +63,8 @@
 					"price": "200.2020",
 					"unit": "piece",
 					"ext": {
-						"mx-cfdi-prod-serv": "50211502"
+						"mx-cfdi-prod-serv": "50211502",
+						"untdid-unit": "H87"
 					}
 				},
 				"sum": "400.4040",
@@ -102,7 +103,8 @@
 					"price": "10.50",
 					"unit": "piece",
 					"ext": {
-						"mx-cfdi-prod-serv": "50211502"
+						"mx-cfdi-prod-serv": "50211502",
+						"untdid-unit": "H87"
 					}
 				},
 				"sum": "10.50",
@@ -122,7 +124,8 @@
 					"price": "10.00",
 					"unit": "piece",
 					"ext": {
-						"mx-cfdi-prod-serv": "50211502"
+						"mx-cfdi-prod-serv": "50211502",
+						"untdid-unit": "H87"
 					}
 				},
 				"sum": "10.00",

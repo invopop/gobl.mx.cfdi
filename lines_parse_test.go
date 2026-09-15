@@ -5,6 +5,7 @@ import (
 
 	"github.com/invopop/gobl.mx.cfdi/addon"
 	"github.com/invopop/gobl.mx.cfdi/test"
+	"github.com/invopop/gobl/catalogues/untdid"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/org"
 	"github.com/stretchr/testify/assert"
@@ -25,7 +26,8 @@ func TestParseConceptos(t *testing.T) {
 		assert.Equal(t, "2", l.Quantity.String())
 		assert.Equal(t, "Cigarros", l.Item.Name)
 		assert.Equal(t, "200.2020", l.Item.Price.String())
-		assert.Equal(t, org.Unit("piece"), l.Item.Unit)
+		assert.Equal(t, org.UnitPiece, l.Item.Unit)
+		assert.Equal(t, cbc.Code("H87"), l.Item.Ext.Get(untdid.ExtKeyUnit))
 		assert.Equal(t, cbc.Code("50211502"), l.Item.Ext.Get(addon.ExtKeyProdServ))
 		assert.Equal(t, "400.4040", l.Sum.String())
 
@@ -52,7 +54,8 @@ func TestParseConceptos(t *testing.T) {
 		require.Len(t, inv.Lines, 1)
 		l := inv.Lines[0]
 
-		assert.Equal(t, org.UnitEmpty, l.Item.Unit)
+		assert.Equal(t, cbc.KeyEmpty, l.Item.Unit)
+		assert.Empty(t, l.Item.Ext.Get(untdid.ExtKeyUnit), "the mutually defined code says nothing")
 	})
 
 	t.Run("should parse item references", func(t *testing.T) {

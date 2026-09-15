@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/invopop/gobl.mx.cfdi/addon"
+	"github.com/invopop/gobl/catalogues/untdid"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/norm"
 	"github.com/invopop/gobl/org"
@@ -93,5 +94,53 @@ func TestItemNilIdentityHandling(t *testing.T) {
 		assert.Equal(t, cbc.Code("01010101"), inv.Lines[0].Item.Ext.Get(addon.ExtKeyProdServ))
 		assert.Len(t, inv.Lines[0].Item.Identities, 1)
 		assert.Equal(t, "5678", inv.Lines[0].Item.Identities[0].Code.String())
+	})
+}
+
+func TestItemUnitNormalization(t *testing.T) {
+	t.Run("adds the UN/ECE code for the unit", func(t *testing.T) {
+		inv := validInvoice()
+		inv.Lines[0].Item.Unit = org.UnitLitre
+
+		require.NoError(t, inv.Calculate())
+		assert.Equal(t, org.UnitLitre, inv.Lines[0].Item.Unit)
+		assert.Equal(t, cbc.Code("LTR"), inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit))
+	})
+
+	t.Run("takes the unit from the code", func(t *testing.T) {
+		inv := validInvoice()
+		inv.Lines[0].Item.Unit = cbc.KeyEmpty
+		inv.Lines[0].Item.Ext = inv.Lines[0].Item.Ext.Set(untdid.ExtKeyUnit, "LTR")
+
+		require.NoError(t, inv.Calculate())
+		assert.Equal(t, org.UnitLitre, inv.Lines[0].Item.Unit)
+	})
+
+	t.Run("keeps a code with no GOBL unit", func(t *testing.T) {
+		inv := validInvoice()
+		inv.Lines[0].Item.Unit = cbc.KeyEmpty
+		inv.Lines[0].Item.Ext = inv.Lines[0].Item.Ext.Set(untdid.ExtKeyUnit, "A59")
+
+		require.NoError(t, inv.Calculate())
+		assert.Equal(t, cbc.KeyEmpty, inv.Lines[0].Item.Unit)
+		assert.Equal(t, cbc.Code("A59"), inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit))
+	})
+
+	t.Run("takes a legacy raw code from the unit", func(t *testing.T) {
+		inv := validInvoice()
+		inv.Lines[0].Item.Unit = "H87"
+
+		require.NoError(t, inv.Calculate())
+		assert.Equal(t, org.UnitPiece, inv.Lines[0].Item.Unit)
+		assert.Equal(t, cbc.Code("H87"), inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit))
+	})
+
+	t.Run("leaves an item without a unit alone", func(t *testing.T) {
+		inv := validInvoice()
+		inv.Lines[0].Item.Unit = cbc.KeyEmpty
+
+		require.NoError(t, inv.Calculate())
+		assert.Equal(t, cbc.KeyEmpty, inv.Lines[0].Item.Unit)
+		assert.Empty(t, inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit))
 	})
 }
