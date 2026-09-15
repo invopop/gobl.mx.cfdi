@@ -24,14 +24,14 @@ func TestClaveUnidad(t *testing.T) {
 			code: "LTR",
 		},
 		{
-			// Normalization keeps one or the other, but a document that
-			// arrives with both is answered by the code it states.
-			name: "extension over the unit",
+			// Normalization aligns the two; an item that arrives with them
+			// disagreeing is answered by its unit.
+			name: "unit over the extension",
 			item: &org.Item{
 				Unit: org.UnitLitre,
 				Ext:  tax.ExtensionsOf(cbc.CodeMap{untdid.ExtKeyUnit: "A59"}),
 			},
-			code: "A59",
+			code: "LTR",
 		},
 		{
 			name: "code without a GOBL unit",

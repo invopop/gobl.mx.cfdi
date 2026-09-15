@@ -114,7 +114,7 @@ func TestItemUnitNormalization(t *testing.T) {
 
 		require.NoError(t, inv.Calculate())
 		assert.Equal(t, org.UnitLitre, inv.Lines[0].Item.Unit)
-		assert.Empty(t, inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit), "the unit says it already")
+		assert.Equal(t, cbc.Code("LTR"), inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit), "the document stated the code")
 	})
 
 	t.Run("keeps a code with no GOBL unit", func(t *testing.T) {
@@ -133,7 +133,7 @@ func TestItemUnitNormalization(t *testing.T) {
 
 		require.NoError(t, inv.Calculate())
 		assert.Equal(t, org.UnitPiece, inv.Lines[0].Item.Unit)
-		assert.Empty(t, inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit), "the unit says it already")
+		assert.Equal(t, cbc.Code("H87"), inv.Lines[0].Item.Ext.Get(untdid.ExtKeyUnit), "the code the document carried")
 	})
 
 	t.Run("leaves an item without a unit alone", func(t *testing.T) {

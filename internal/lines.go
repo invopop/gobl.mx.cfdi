@@ -13,15 +13,15 @@ const (
 	DefaultClaveProdServ = "01010101"
 )
 
-// ClaveUnidad determines the line item's "ClaveUnidad" value from the item's
-// unit, falling back to the mutually defined code when there is nothing to
-// map. Normalization keeps the UN/ECE code in the extension, including codes
-// that have no GOBL unit key of their own.
+// ClaveUnidad determines the line item's "ClaveUnidad" value. The item's unit
+// answers for it, as it does in GOBL, and the extension for the codes GOBL has
+// no unit for, leaving the mutually defined code for an item that states
+// neither.
 func ClaveUnidad(line *bill.Line) cbc.Code {
-	if code := line.Item.Ext.Get(untdid.ExtKeyUnit); code != cbc.CodeEmpty {
+	if code := untdid.UnitCode(line.Item.Unit); code != cbc.CodeEmpty {
 		return code
 	}
-	if code := untdid.UnitCode(line.Item.Unit); code != cbc.CodeEmpty {
+	if code := line.Item.Ext.Get(untdid.ExtKeyUnit); code != cbc.CodeEmpty {
 		return code
 	}
 	return DefaultClaveUnidad
