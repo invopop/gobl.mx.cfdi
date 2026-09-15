@@ -3,7 +3,7 @@ module github.com/invopop/gobl.mx.cfdi
 go 1.25.0
 
 require (
-	github.com/invopop/gobl v0.506.1-0.20260915110910-d149f54dd901
+	github.com/invopop/gobl v0.506.1-0.20260915133908-f0ea1ebe7e41
 	github.com/joho/godotenv v1.5.1
 	github.com/magefile/mage v1.15.0
 	github.com/nbio/xml v0.0.0-20260120185757-5486e0eaec83
