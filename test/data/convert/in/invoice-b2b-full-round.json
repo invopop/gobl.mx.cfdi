@@ -4,7 +4,7 @@
 		"uuid": "0195ce71-dc9c-72c8-bf2c-9890a4a9f0a2",
 		"dig": {
 			"alg": "sha256",
-			"val": "c3fb4a41097d620b9f27ce4fcdc6769c34ff05a2831e8313691e0e743b9a5673"
+			"val": "b5dce7b7e09848e685f00c9402a427fd034b74f9d0d035ed668d558224775c39"
 		}
 	},
 	"doc": {
@@ -73,7 +73,7 @@
 						"amount": "100.10"
 					},
 					{
-						"amount": "100.1010"
+						"amount": "100.10"
 					}
 				],
 				"taxes": [

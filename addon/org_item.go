@@ -3,6 +3,7 @@ package addon
 import (
 	"regexp"
 
+	"github.com/invopop/gobl/catalogues/untdid"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/org"
 	"github.com/invopop/gobl/tax"
@@ -26,6 +27,7 @@ func normalizeItem(item *org.Item) {
 	if item == nil {
 		return
 	}
+	normalizeItemUnit(item)
 	// 2023-08-25: Migrate identities to extensions
 	// Pending removal after migrations completed.
 	idents := make([]*org.Identity, 0)
@@ -51,4 +53,11 @@ func normalizeItem(item *org.Item) {
 			}
 		}
 	}
+}
+
+// normalizeItemUnit resolves the item's unit against the UNTDID extension,
+// which is where a "ClaveUnidad" with no GOBL unit of its own is kept: SAT's
+// c_ClaveUnidad catalogue is built on the same UN/ECE recommendations.
+func normalizeItemUnit(item *org.Item) {
+	item.Unit, item.Ext = untdid.NormalizeUnit(item.Unit, item.Ext)
 }

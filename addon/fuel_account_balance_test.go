@@ -7,6 +7,7 @@ import (
 
 	"github.com/invopop/gobl.mx.cfdi/addon"
 	"github.com/invopop/gobl/num"
+	"github.com/invopop/gobl/org"
 	"github.com/invopop/gobl/regimes/mx"
 	"github.com/invopop/gobl/rules"
 	"github.com/invopop/gobl/tax"
@@ -376,5 +377,33 @@ func TestCalculate(t *testing.T) {
 		assert.JSONEq(t, exp, string(data))
 
 		assert.Equal(t, total, fab.Total.Float64())
+	})
+}
+
+func TestFuelAccountItemUnit(t *testing.T) {
+	t.Run("keeps a GOBL unit key", func(t *testing.T) {
+		fab := &addon.FuelAccountBalance{
+			Lines: []*addon.FuelAccountLine{
+				{
+					Quantity: num.MakeAmount(1, 0),
+					Item:     &addon.FuelAccountItem{Unit: org.UnitLitre, Price: num.MakeAmount(1, 0)},
+				},
+			},
+		}
+		require.NoError(t, fab.Calculate())
+		assert.Equal(t, org.UnitLitre, fab.Lines[0].Item.Unit)
+	})
+
+	t.Run("migrates a legacy UN/ECE code", func(t *testing.T) {
+		fab := &addon.FuelAccountBalance{
+			Lines: []*addon.FuelAccountLine{
+				{
+					Quantity: num.MakeAmount(1, 0),
+					Item:     &addon.FuelAccountItem{Unit: "LTR", Price: num.MakeAmount(1, 0)},
+				},
+			},
+		}
+		require.NoError(t, fab.Calculate())
+		assert.Equal(t, org.UnitLitre, fab.Lines[0].Item.Unit)
 	})
 }

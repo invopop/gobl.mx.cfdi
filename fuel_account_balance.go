@@ -5,6 +5,7 @@ import (
 
 	"github.com/invopop/gobl.mx.cfdi/addon"
 	"github.com/invopop/gobl.mx.cfdi/internal/format"
+	"github.com/invopop/gobl/catalogues/untdid"
 	"github.com/invopop/gobl/regimes/mx"
 	"github.com/invopop/gobl/tax"
 )
@@ -83,7 +84,7 @@ func newECCConceptos(lines []*addon.FuelAccountLine) []*ECCConcepto {
 			ClaveEstacion:     l.ServiceStationCode.String(),
 			Cantidad:          l.Quantity.RescaleRange(1, 3).String(),
 			TipoCombustible:   l.Item.Type.String(),
-			Unidad:            l.Item.Unit.UNECE().String(),
+			Unidad:            untdid.UnitCode(l.Item.Unit).String(),
 			NombreCombustible: l.Item.Name,
 			FolioOperacion:    l.PurchaseCode.String(),
 			ValorUnitario:     l.Item.Price.RescaleRange(1, 3).String(),

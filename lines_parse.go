@@ -4,6 +4,7 @@ import (
 	"github.com/invopop/gobl.mx.cfdi/addon"
 	"github.com/invopop/gobl.mx.cfdi/internal"
 	"github.com/invopop/gobl/bill"
+	"github.com/invopop/gobl/catalogues/untdid"
 	"github.com/invopop/gobl/cbc"
 	"github.com/invopop/gobl/num"
 	"github.com/invopop/gobl/org"
@@ -42,15 +43,17 @@ func goblNewLine(c *Concepto, index int) (*bill.Line, error) {
 		total = total.Subtract(*c.Descuento)
 	}
 
+	unit, ext := untdid.NormalizeUnit(cbc.KeyEmpty, goblItemExt(c))
+
 	return &bill.Line{
 		Index:    index,
 		Quantity: qty,
 		Item: &org.Item{
 			Name:  c.Desc,
 			Price: &c.ValorUnitario,
-			Unit:  goblItemUnit(c.ClaveUnidad),
+			Unit:  unit,
 			Ref:   cbc.Code(c.Ref),
-			Ext:   goblItemExt(c),
+			Ext:   ext,
 		},
 		Sum:       &c.Importe,
 		Total:     &total,
@@ -62,22 +65,19 @@ func goblNewLine(c *Concepto, index int) (*bill.Line, error) {
 }
 
 func goblItemExt(c *Concepto) tax.Extensions {
-	if c == nil || c.ClaveProdServ == "" || c.ClaveProdServ == internal.DefaultClaveProdServ {
-		return tax.Extensions{}
+	ext := tax.Extensions{}
+	if c == nil {
+		return ext
 	}
-	return tax.ExtensionsOf(cbc.CodeMap{
-		addon.ExtKeyProdServ: cbc.Code(c.ClaveProdServ),
-	})
-}
-
-func goblItemUnit(cu string) org.Unit {
-	for _, def := range org.UnitDefinitions {
-		if def.UNECE == cbc.Code(cu) {
-			return def.Unit
-		}
+	if c.ClaveProdServ != "" && c.ClaveProdServ != internal.DefaultClaveProdServ {
+		ext = ext.Set(addon.ExtKeyProdServ, cbc.Code(c.ClaveProdServ))
 	}
-	// No unit found, use empty unit
-	return org.UnitEmpty
+	// Keep the unit code as given so that normalization can resolve it,
+	// but not the mutually defined default, which says nothing.
+	if c.ClaveUnidad != "" && c.ClaveUnidad != internal.DefaultClaveUnidad {
+		ext = ext.Set(untdid.ExtKeyUnit, cbc.Code(c.ClaveUnidad))
+	}
+	return ext
 }
 
 func goblLineDiscounts(d *num.Amount) []*bill.LineDiscount {
