@@ -30,7 +30,7 @@ const (
 
 // Generic supplier constants
 const (
-	NombreReceptorGenerico       = "PÚBLICO EN GENERAL"
+	NombreReceptorGenerico       = "PUBLICO EN GENERAL"
 	RegimenFiscalSinObligaciones = "616" // no tax obligations
 )
 
