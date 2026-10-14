@@ -21,6 +21,7 @@ const (
 	ExtKeyGlobalPeriod  cbc.Key = "mx-cfdi-global-period"
 	ExtKeyGlobalMonth   cbc.Key = "mx-cfdi-global-month"
 	ExtKeyGlobalYear    cbc.Key = "mx-cfdi-global-year"
+	ExtKeyCancelReason  cbc.Key = "mx-cfdi-cancel-reason"
 )
 
 // CFDI Extension Codes
@@ -92,6 +93,12 @@ const (
 	RelTypeTransfer      cbc.Code = "05"
 	RelTypeFromTransfers cbc.Code = "06"
 	RelTypeAdvance       cbc.Code = "07"
+
+	// Cancel Reason Extension codes
+	CancelReasonErrorsWithRelation    cbc.Code = "01"
+	CancelReasonErrorsWithoutRelation cbc.Code = "02"
+	CancelReasonNotCarriedOut         cbc.Code = "03"
+	CancelReasonGlobalInvoice         cbc.Code = "04"
 )
 
 var extensions = []*cbc.Definition{
@@ -963,5 +970,46 @@ var extensions = []*cbc.Definition{
 			i18n.EN: "",
 		},
 		Pattern: `\d{4}`,
+	},
+	{
+		Key: ExtKeyCancelReason,
+		Name: i18n.String{
+			i18n.EN: "Cancellation Reason",
+			i18n.ES: "Motivo de Cancelación",
+		},
+		Desc: i18n.String{
+			i18n.EN: "Reason for cancelling a CFDI at the SAT. Reason 01 requires the UUID of the CFDI that substitutes it.",
+			i18n.ES: "Motivo de la cancelación de un CFDI ante el SAT. El motivo 01 requiere el folio fiscal del CFDI que lo sustituye.",
+		},
+		Values: []*cbc.Definition{
+			{
+				Code: CancelReasonErrorsWithRelation,
+				Name: i18n.String{
+					i18n.EN: "Issued with errors, with relation",
+					i18n.ES: "Comprobante emitido con errores con relación",
+				},
+			},
+			{
+				Code: CancelReasonErrorsWithoutRelation,
+				Name: i18n.String{
+					i18n.EN: "Issued with errors, without relation",
+					i18n.ES: "Comprobante emitido con errores sin relación",
+				},
+			},
+			{
+				Code: CancelReasonNotCarriedOut,
+				Name: i18n.String{
+					i18n.EN: "The operation was not carried out",
+					i18n.ES: "No se llevó a cabo la operación",
+				},
+			},
+			{
+				Code: CancelReasonGlobalInvoice,
+				Name: i18n.String{
+					i18n.EN: "Nominative operation included in a global invoice",
+					i18n.ES: "Operación nominativa relacionada en una factura global",
+				},
+			},
+		},
 	},
 }
