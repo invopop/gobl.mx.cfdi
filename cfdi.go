@@ -30,8 +30,9 @@ const (
 
 // Generic supplier constants
 const (
-	NombreReceptorGenerico       = "PUBLICO EN GENERAL"
-	RegimenFiscalSinObligaciones = "616" // no tax obligations
+	NombreReceptorGenerico         = "PUBLICO EN GENERAL"
+	NombreReceptorGenericoNoGlobal = "PÚBLICO EN GENERAL"
+	RegimenFiscalSinObligaciones   = "616" // no tax obligations
 )
 
 // TipoFactor definitions.

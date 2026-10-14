@@ -62,6 +62,11 @@ func convertInvoice(inv *bill.Invoice) (*Document, error) {
 		Impuestos:        newImpuestos(inv.Totals, inv.Lines, inv.Currency),
 	}
 
+	// The SAT reserves the exact generic name for global invoices (CFDI40130).
+	if doc.Global == nil && inv.Customer == nil {
+		doc.Receptor.Nombre = NombreReceptorGenericoNoGlobal
+	}
+
 	// Determine the subtotal directly from the concepts, as there may be some
 	// additional taxes included in the line charges that needed to be taken into
 	// account for the totals.
