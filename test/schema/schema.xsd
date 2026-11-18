@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<!-- Add here the schemas of any namespace used in the XML files to be tested -->
+	<!-- Local copies of the schemas the ones below import by URL. They come first so the remote imports are skipped. -->
+	<xs:import namespace="http://www.sat.gob.mx/sitio_internet/cfd/catalogos" schemaLocation="./catCFDI.xsd" />
+	<xs:import namespace="http://www.sat.gob.mx/sitio_internet/cfd/tipoDatos/tdCFDI" schemaLocation="./tdCFDI.xsd" />
+	<xs:import namespace="http://www.sat.gob.mx/sitio_internet/cfd/catalogos/Pagos" schemaLocation="./catPagos.xsd" />
+	<xs:import namespace="http://www.sat.gob.mx/sitio_internet/cfd/catalogos/Combustible" schemaLocation="./catCombustible.xsd" />
 	<xs:import namespace="http://www.sat.gob.mx/cfd/4" schemaLocation="./cfdv40.xsd" />
 	<xs:import namespace="http://www.sat.gob.mx/EstadoDeCuentaCombustible12" schemaLocation="./ecc12.xsd" />
 	<xs:import namespace="http://www.sat.gob.mx/valesdedespensa" schemaLocation="./valesdedespensa.xsd" />
