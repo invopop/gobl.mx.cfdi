@@ -103,13 +103,7 @@ func main() {
 
 ### Testing
 
-This package uses [lestrrat-go/libxml2](https://github.com/lestrrat-go/libxml2) for testing purporses, which in turn depends on the libxml-2.0 C library. Ensure you have the development dependency installed. In linux this implies:
-
-```bash
-sudo apt-get install libxml2-dev
-```
-
-Tests can take a while to run as they download the complete XML documents to test against, please be patient.
+The tests validate the generated documents against the SAT schemas in `test/schema` with [lestrrat-go/helium](https://github.com/lestrrat-go/helium), a pure-Go library, so they need no C dependencies. The schemas the SAT ones import by URL are kept there as local copies, so the tests don't download anything.
 
 ## Addendas
 

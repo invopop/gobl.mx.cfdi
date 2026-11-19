@@ -2,7 +2,9 @@ package cfdi_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
+	"errors"
 	"flag"
 	"os"
 	"path/filepath"
@@ -15,8 +17,8 @@ import (
 	"github.com/invopop/gobl/bill"
 	"github.com/invopop/gobl/dsig"
 	"github.com/invopop/gobl/uuid"
-	"github.com/lestrrat-go/libxml2"
-	"github.com/lestrrat-go/libxml2/xsd"
+	"github.com/lestrrat-go/helium"
+	"github.com/lestrrat-go/helium/xsd"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -113,10 +115,15 @@ func TestParseExamples(t *testing.T) {
 }
 
 func loadSchema() (*xsd.Schema, error) {
+	ctx := context.Background()
 	schemaPath := filepath.Join(test.GetTestPath(), "schema", "schema.xsd")
-	schema, err := xsd.ParseFromFile(schemaPath)
+	collector := helium.NewErrorCollector(ctx, helium.ErrorLevelNone)
+	schema, err := xsd.NewCompiler().
+		FS(helium.PermissiveFS()).
+		ErrorHandler(collector).
+		CompileFile(ctx, schemaPath)
 	if err != nil {
-		return nil, err
+		return nil, errors.Join(append(collector.Errors(), err)...)
 	}
 
 	return schema, nil
@@ -181,14 +188,19 @@ func dataPath(files ...string) string {
 }
 
 func validateDoc(schema *xsd.Schema, doc []byte) []error {
-	xmlDoc, err := libxml2.ParseString(string(doc))
+	ctx := context.Background()
+	xmlDoc, err := helium.NewParser().Parse(ctx, doc)
 	if err != nil {
 		return []error{err}
 	}
 
-	err = schema.Validate(xmlDoc)
+	collector := helium.NewErrorCollector(ctx, helium.ErrorLevelNone)
+	err = xsd.NewValidator(schema).ErrorHandler(collector).Validate(ctx, xmlDoc)
 	if err != nil {
-		return err.(xsd.SchemaValidationError).Errors()
+		if errs := collector.Errors(); len(errs) > 0 {
+			return errs
+		}
+		return []error{err}
 	}
 
 	return nil
