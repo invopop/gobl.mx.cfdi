@@ -101,6 +101,24 @@ func main() {
 }
 ```
 
+### GOBL convert register
+
+Importing this package registers the `mx-cfdi-v4` format with the GOBL [`convert`](https://github.com/invopop/gobl/tree/main/convert) register, for importing invoices and exporting invoices and payments:
+
+```go
+import (
+    "github.com/invopop/gobl/convert"
+    _ "github.com/invopop/gobl.mx.cfdi"
+)
+
+out, err := convert.Export(env, "mx-cfdi-v4")
+res, err := convert.Import(data) // res.Envelope
+```
+
+Invoices and payments must include the `mx-cfdi-v4` addon to be exported. Otherwise the export is refused with `convert.ErrNotSupported` and rules faults, such as `MX-CFDI-V4-BILL-INVOICE-01` on `$addons`. Documents exported through the register are neither sealed nor stamped. Attachments are not embedded, so exports with `convert.WithAttachments` are refused.
+
+Only invoice (`I`) and credit note (`E`) CFDI documents are detected and imported. Other types, such as payments (`P`), are not recognized.
+
 ### Testing
 
 The tests validate the generated documents against the SAT schemas in `test/schema` with [lestrrat-go/helium](https://github.com/lestrrat-go/helium), a pure-Go library, so they need no C dependencies. The schemas the SAT ones import by URL are kept there as local copies, so the tests don't download anything.
