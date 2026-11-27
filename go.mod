@@ -3,7 +3,7 @@ module github.com/invopop/gobl.mx.cfdi
 go 1.26.1
 
 require (
-	github.com/invopop/gobl v0.507.0
+	github.com/invopop/gobl v0.512.0
 	github.com/joho/godotenv v1.5.1
 	github.com/lestrrat-go/helium v0.11.0
 	github.com/magefile/mage v1.15.0
@@ -18,7 +18,7 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dlclark/regexp2 v1.12.0 // indirect
 	github.com/expr-lang/expr v1.17.8 // indirect
-	github.com/go-jose/go-jose/v4 v4.1.4 // indirect
+	github.com/go-jose/go-jose/v4 v4.1.6 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/invopop/yaml v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect

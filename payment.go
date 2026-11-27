@@ -373,7 +373,7 @@ func newPago(pmt *bill.Payment, taxes *paymentTaxes, tc num.Amount) *Pago {
 		MonedaP:          string(pmt.Currency),
 		TipoCambioP:      tc.RescaleDown(6).String(),
 		Monto:            pmt.Total.Rescale(pmt.Currency.Def().Subunits).String(),
-		NumOperacion:     method.Ref,
+		NumOperacion:     method.Ref.String(),
 		DoctoRelacionado: newDoctoRelacionados(pmt, taxes),
 		ImpuestosP:       newImpuestosP(taxes), // Must be run after newDoctoRelacionados to get the accumulated taxes
 	}
